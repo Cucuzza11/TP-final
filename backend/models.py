@@ -19,3 +19,14 @@ class Pelicula(db.Model):
     fecha_lanzamiento = db.Column(db.DateTime, nullable=False)
     imagen = db.Column(db.String[500], nullable=False)
     fecha_creacion = db.Column(db.DateTime, default=datetime.datetime.now())
+
+class Interprete(db.Model):
+    __tablename__ = 'interpretes'
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String[50], nullable=False)
+    apellido = db.Column(db.String[50])
+    nacionalidad = db.Column(db.String[50])
+    fecha_nacimineto= db.Column(db.DateTime)
+    imagen = db.Column(db.String[500], nullable=False)
+    nombre_interpretacion = db.Column(db.String[50], nullable=False)
+    fecha_creacion = db.Column(db.DateTime, default=datetime.datetime.now())
