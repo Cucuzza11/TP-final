@@ -30,3 +30,10 @@ class Interprete(db.Model):
     imagen = db.Column(db.String[500], nullable=False)
     nombre_interpretacion = db.Column(db.String[50], nullable=False)
     fecha_creacion = db.Column(db.DateTime, default=datetime.datetime.now())
+
+class Actuacion(db.Model):
+    __tablename__ = 'actuaciones'
+    id = db.Column(db.Integer, primary_key=True)
+    pelicula_id = db.Column(db.Integer, db.ForeignKey('peliculas.id'))
+    interprete_id = db.Column(db.Integer, db.ForeignKey('interpretes.id'))
+    fecha_creacion = db.Column(db.DateTime, default=datetime.datetime.now())
