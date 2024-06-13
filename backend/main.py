@@ -18,30 +18,23 @@ def hola_mundo():
 def mostrar_peliculas():
 
     try:
-        peliculas = db.session.query(Pelicula, Genero
-        ).filter(Pelicula.genero_id == Genero.id
-        ).all()
+        peliculas = Pelicula.query.all()
 
         peliculas_data = []
         
-        for (pelicula, genero) in peliculas:
+        for pelicula in peliculas:
             pelicula_data = {
                 "id": pelicula.id,
                 "titulo": pelicula.titulo,
-                "descripcion": pelicula.descripcion,
-                "genero": genero.nombre,
-                "director": pelicula.director,
-                "ano_lanzamiento": pelicula.ano_lanzamiento,
                 "imagen": pelicula.imagen,
             }
             peliculas_data.append(pelicula_data)  
-            
+
         return jsonify(peliculas_data)
 
     except:
         return jsonify({"mensaje": "No se ha podido cargar ninguna pelicula"})
     
-
 
 if __name__ == '__main__':
     print('Iniciando servidor...')
