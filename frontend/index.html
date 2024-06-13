@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Listado de todas las peliculas">
+    <title>Peliculas</title>
+
+</head>
+
+<body>
+
+    <h2>Peliculas</h2>
+    <br>
+    <div id="peliculas"></div>
+    <script>
+
+    function response_received(response) {
+        return response.json()
+    }
+    
+    function parse_peliculas(contenido) {
+        
+        const pelicula = document.getElementById("peliculas")
+
+        for (let index = 0; index < contenido.length; index++) {
+            
+            const item = document.createElement("p")
+            //<a href="pelicula?id=${contenido[index].id}" >${contenido[index].titulo}</a>
+            item.innerHTML = `peli:${contenido[index].titulo}`;
+            pelicula.append(item);
+        }
+    }
+    
+    function request_error(error) {
+        console.log("ERROR")
+        console.log(error);
+    }
+
+    fetch("http://localhost:5000/peliculas")
+        .then(response_received)
+        .then(parse_peliculas)
+        .catch(request_error)
+    </script> 
+</body>
+
+</html>
