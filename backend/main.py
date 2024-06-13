@@ -14,7 +14,31 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 def hola_mundo():
     return 'Hola mundo'
 
+@app.route('/peliculas/', methods=["GET"])
+def mostrar_peliculas():
 
+    try:
+        peliculas = Pelicula.query.all()
+        
+        peliculas_data = []
+
+        for pelicula in peliculas:
+            pelicula_data = {
+                "id": pelicula.id,
+                "titulo": pelicula.titulo,
+                "descripcion": pelicula.descripcion,
+                "genero_id": pelicula.genero_id,
+                "director": pelicula.director,
+                "ano_lanzamiento": pelicula.ano_lanzamiento,
+                "imagen": pelicula.imagen,
+            }
+            peliculas_data.append(pelicula_data)    
+        return jsonify(peliculas_data)
+
+
+    except:
+        return jsonify({"mensaje": "No se ha podido cargar ninguna pelicula"})
+    
 
 
 if __name__ == '__main__':

@@ -16,7 +16,7 @@ class Pelicula(db.Model):
     descripcion = db.Column(db.String[500], nullable=False)
     genero_id = db.Column(db.Integer, db.ForeignKey('generos.id'))
     director = db.Column(db.String[50], nullable=False)
-    año_lanzamiento = db.Column(db.Integer, nullable=False)
+    ano_lanzamiento = db.Column(db.Integer, nullable=False)
     imagen = db.Column(db.String[500], nullable=False)
     fecha_creacion = db.Column(db.DateTime, default=datetime.datetime.now())
 
