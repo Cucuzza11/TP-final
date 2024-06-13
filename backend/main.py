@@ -6,7 +6,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 port = 5000
-#app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://nadia:Nadu1108@localhost:5432/tp'
+#app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://nadia:Nadia1108@localhost:5432/tp'
 app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://alex:Alex0103@localhost:5432/tp'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
@@ -18,23 +18,25 @@ def hola_mundo():
 def mostrar_peliculas():
 
     try:
-        peliculas = Pelicula.query.all()
-        
-        peliculas_data = []
+        peliculas = db.session.query(Pelicula, Genero
+        ).filter(Pelicula.genero_id == Genero.id
+        ).all()
 
-        for pelicula in peliculas:
+        peliculas_data = []
+        
+        for (pelicula, genero) in peliculas:
             pelicula_data = {
                 "id": pelicula.id,
                 "titulo": pelicula.titulo,
                 "descripcion": pelicula.descripcion,
-                "genero_id": pelicula.genero_id,
+                "genero": genero.nombre,
                 "director": pelicula.director,
                 "ano_lanzamiento": pelicula.ano_lanzamiento,
                 "imagen": pelicula.imagen,
             }
-            peliculas_data.append(pelicula_data)    
+            peliculas_data.append(pelicula_data)  
+            
         return jsonify(peliculas_data)
-
 
     except:
         return jsonify({"mensaje": "No se ha podido cargar ninguna pelicula"})
