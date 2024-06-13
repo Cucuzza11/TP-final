@@ -16,7 +16,7 @@ class Pelicula(db.Model):
     descripcion = db.Column(db.String[500], nullable=False)
     genero_id = db.Column(db.Integer, db.ForeignKey('generos.id'))
     director = db.Column(db.String[50], nullable=False)
-    fecha_lanzamiento = db.Column(db.DateTime, nullable=False)
+    año_lanzamiento = db.Column(db.Integer, nullable=False)
     imagen = db.Column(db.String[500], nullable=False)
     fecha_creacion = db.Column(db.DateTime, default=datetime.datetime.now())
 
@@ -26,7 +26,7 @@ class Interprete(db.Model):
     nombre = db.Column(db.String[50], nullable=False)
     apellido = db.Column(db.String[50])
     nacionalidad = db.Column(db.String[50])
-    fecha_nacimineto= db.Column(db.DateTime)
+    fecha_nacimiento= db.Column(db.DateTime)
     imagen = db.Column(db.String[500], nullable=False)
     nombre_interpretacion = db.Column(db.String[50], nullable=False)
     fecha_creacion = db.Column(db.DateTime, default=datetime.datetime.now())
