@@ -24,7 +24,6 @@ class Interprete(db.Model):
     __tablename__ = 'interpretes'
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String[50], nullable=False)
-    apellido = db.Column(db.String[50])
     nacionalidad = db.Column(db.String[50])
     fecha_nacimiento= db.Column(db.DateTime)
     imagen = db.Column(db.String[500], nullable=False)
