@@ -14,6 +14,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 def hola_mundo():
     return 'Hola mundo'
 
+# BUSCAR LA DIFERENCIA ENTYRE PATH PARAMS Y QUERY PARAMS PARA NADU
+
 @app.route('/peliculas/', methods=["GET"])
 def mostrar_peliculas():
 
@@ -34,6 +36,33 @@ def mostrar_peliculas():
 
     except:
         return jsonify({"mensaje": "No se ha podido cargar ninguna pelicula"})
+    
+
+@app.route('/peliculas/<id_pelicula>', methods=["GET"])
+def mostrar_pelicula(id_pelicula):
+
+    try:
+        pelicula_seleccionada = db.session.query(Pelicula, Genero
+        ).filter(Pelicula.id == id_pelicula, Pelicula.genero_id == Genero.id
+        ).first()
+        
+        pelicula, genero = pelicula_seleccionada
+        #capaz hay que agregar los interpretes
+        pelicula_data = {
+            "id": pelicula.id,
+            "titulo": pelicula.titulo,
+            "descripcion": pelicula.descripcion,
+            "genero": genero.nombre,
+            "director": pelicula.director,
+            "ano_lanzamiento": pelicula.ano_lanzamiento,
+            "imagen": pelicula.imagen,
+        }     
+        return jsonify(pelicula_data)
+
+    except:
+        return jsonify({"mensaje": "No se ha podido cargar ninguna pelicula"})
+    
+
     
 
 if __name__ == '__main__':
