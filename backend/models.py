@@ -25,7 +25,7 @@ class Interprete(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String[50], nullable=False)
     nacionalidad = db.Column(db.String[50])
-    fecha_nacimiento= db.Column(db.DateTime)
+    fecha_nacimiento= db.Column(db.Date)
     imagen = db.Column(db.String[500], nullable=False)
     nombre_interpretacion = db.Column(db.String[50], nullable=False)
     fecha_creacion = db.Column(db.DateTime, default=datetime.datetime.now())
