@@ -62,6 +62,29 @@ def mostrar_pelicula(id_pelicula):
         return jsonify({"mensaje": "No se ha podido cargar la pelicula seleccionada"})
     
 
+@app.route('/peliculas/<id_pelicula>/reparto/', methods=["GET"])
+def mostrar_interpretes(id_pelicula):
+
+    try:
+        interpretes = db.session.query(Interprete).join(Actuacion).join(Pelicula
+        ).filter( Interprete.id == Actuacion.interprete_id,
+        Actuacion.pelicula_id == Pelicula.id, Pelicula.id == id_pelicula).all()
+
+        interpretes_data = []
+        
+        for interprete in interpretes:
+            interprete_data = {
+                "id": interprete.id,
+                "imagen": interprete.imagen,
+                "interpretacion": interprete.nombre_interpretacion,
+            }
+            interpretes_data.append(interprete_data)      
+        return jsonify(interpretes_data)
+
+    except:
+        return jsonify({"mensaje": "No se han podido cargar los interpretes "})
+    
+
 if __name__ == '__main__':
     print('Iniciando servidor...')
     db.init_app(app)
