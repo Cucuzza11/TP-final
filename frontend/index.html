@@ -39,7 +39,7 @@
 
                 const card = document.createElement("a");
                 card.setAttribute("class", "card text-decoration-none");
-                card.setAttribute("href", `/character?id=${contenido[index].id}`);
+                card.setAttribute("href", `/peliculas?id=${contenido[index].id}`);
 
                 const imagen = document.createElement("img");
                 imagen.setAttribute("class", "img-thumbnail");
@@ -55,7 +55,7 @@
 
                 const ref = document.createElement("a");
                 ref.setAttribute("class", "btn btn-primary");
-                ref.setAttribute("href", `/pelicula?id=${contenido[index].id}`);
+                ref.setAttribute("href", `/peliculas?id=${contenido[index].id}`);
                 ref.textContent = "Info";
 
                 card_body.append(titulo);
