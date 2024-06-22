@@ -4,3 +4,12 @@
     padding: 10px;
     margin: 10px;
 }
+
+.horizontal {
+    display: flex;
+}
+
+.horizontal label{
+    margin-right: 10px;
+}
+
