@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../assets/styles.css">
-    <title>Peliculas</title> 
+    <title>Movie</title> 
 
 </head>
 
@@ -28,19 +28,24 @@
                             <br>
                             <div class="horizontal"> 
                                 <label for="ano_lanzamiento" class="text-body-secondary">Año:</label>
-                                <label for="ano_lanzamiento" class="lead"> <small class="text-body-secondary" id="ano_lanzamiento"></small></label>
+                                <h3 for="ano_lanzamiento" class="lead"> <small class="text-body-secondary" id="ano_lanzamiento"></small></h3>
                             </div>      
                             <div class="horizontal">
                                 <label for="director" class="text-body-secondary">Director:</label>
-                                <label for="director" class="lead"> <small class="text-body-secondary" id="director" ></small></h3>
+                                <h3 for="director" class="lead"> <small class="text-body-secondary" id="director" ></small></h3>
                             </div>
                             <br>
                             <h3 id="descripcion" class="display-6"></h3>
-                            <ul id="peliculas"></ul>
+                            <ul id="films"></ul>
+                            <a id = "buttonCast" class="btn btn-primary">Ver Reparto</a>
                         </div>
                     </div>
+                    <div class="card-footer">
+                        <button class="btn btn-danger" onclick="">Eliminar</button>
+                        <a id = "buttonEdit" class="btn btn-secondary" >Editar</a>  
+                    </div> 
                 </div>
-            </div>
+            </div> 
         </div>
     </div>
 
@@ -53,37 +58,40 @@
         const params = new URLSearchParams(window.location.search);
         const id = params.get("id");
 
+        document.getElementById("buttonEdit").setAttribute("href", `/peliculas/edit?id=${id}`)
+        document.getElementById("buttonCast").setAttribute("href", `/peliculas/reparto?id=${id}`)
+
         function response_received(response) {
             return response.json()
         }
         
-        function parse_pelicula(contenido) {
+        function parse_pelicula(content) {
 
-            const peliculas = document.getElementById("peliculas")
+            const films = document.getElementById("fils")
             
             const titulo = document.getElementById("titulo");
-            titulo.innerText = contenido.titulo;
+            titulo.innerText = content.titulo;
 
             const genero = document.getElementById("genero");
-            genero.innerText = contenido.genero;
+            genero.innerText = content.genero;
 
             const imagen = document.getElementById("imagen");
-            imagen.setAttribute("src", contenido.imagen);
+            imagen.setAttribute("src", content.imagen);
 
             const ano_lanzamiento = document.getElementById("ano_lanzamiento");
-            ano_lanzamiento.innerText = contenido.ano_lanzamiento;
+            ano_lanzamiento.innerText = content.ano_lanzamiento;
 
             const descripcion = document.getElementById("descripcion");
-            descripcion.innerText = contenido.descripcion;
+            descripcion.innerText = content.descripcion;titulo
 
             const director = document.getElementById("director");
-            director.innerText = contenido.director;
+            director.innerText = content.director;
             
-            const name_list = contenido.names.split(",") 
+            const name_list = content.names.split(",") 
             for (let index = 0; index < name_list.length; index++) {
                 const element = document.createElement("li")
                 element.innerText = name_list[index]
-                peliculas.append(element)
+                films.append(element)
             }
         }
         
