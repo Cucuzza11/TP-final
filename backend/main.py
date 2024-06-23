@@ -62,7 +62,7 @@ def mostrar_pelicula(id_pelicula):
         return jsonify({"mensaje": "No se ha podido cargar la pelicula seleccionada"})
     
 
-@app.route('/peliculas/<id_pelicula>/reparto/', methods=["GET"])
+@app.route('/peliculas/reparto/<id_pelicula>', methods=["GET"])
 def mostrar_interpretes(id_pelicula):
 
     try:
@@ -71,7 +71,7 @@ def mostrar_interpretes(id_pelicula):
         Actuacion.pelicula_id == Pelicula.id, Pelicula.id == id_pelicula).all()
 
         interpretes_data = []
-        
+        print(interpretes)
         for interprete in interpretes:
             interprete_data = {
                 "id": interprete.id,
