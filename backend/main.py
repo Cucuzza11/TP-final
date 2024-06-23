@@ -38,6 +38,30 @@ def mostrar_peliculas():
         return jsonify({"mensaje": "No se ha podido cargar ninguna pelicula"})
     
 
+@app.route('/peliculas/', methods=["POST"])
+def agregar_peliculas():
+
+    try:
+        nuevo_titulo = request.json.get("titulo")
+        nueva_descripcion = request.json.get("descripcion")
+        nuevo_genero_id = request.json.get("genero_id") 
+        nuevo_director = request.json.get("director")
+        nuevo_ano_lanzamiento = request.json.get("ano_lanzamiento")
+        nueva_imagen = request.json.get("imagen")
+
+        nueva_pelicula = Pelicula(titulo=nuevo_titulo, descripcion=nueva_descripcion, 
+                                genero_id=nuevo_genero_id, director=nuevo_director, 
+                                ano_lanzamiento=nuevo_ano_lanzamiento, imagen=nueva_imagen)
+        db.session.add(nueva_pelicula)
+        db.session.commit()
+        
+        return {"exito": "pelicula agregada"}
+
+    except:
+        print("chau")
+        return jsonify({"mensaje": "No se ha podido cargar ninguna pelicula"})
+    
+
 @app.route('/peliculas/<id_pelicula>', methods=["GET"])
 def mostrar_pelicula(id_pelicula):
 
