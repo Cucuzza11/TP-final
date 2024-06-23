@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify, redirect, url_for
 from models import db, Genero, Pelicula, Interprete, Actuacion
 from flask_cors import CORS
+
 import datetime 
+from datetime import date
 
 
 app = Flask(__name__)
@@ -39,7 +41,7 @@ def mostrar_peliculas():
     
 
 @app.route('/peliculas/', methods=["POST"])
-def agregar_peliculas():
+def agregar_pelicula():
 
     try:
         nuevo_titulo = request.json.get("titulo")
@@ -55,11 +57,12 @@ def agregar_peliculas():
         db.session.add(nueva_pelicula)
         db.session.commit()
         
-        return {"exito": "pelicula agregada"}
+        return {"exito": "pelicula agregada", "titulo": nuevo_titulo, "descripcion": nueva_descripcion,
+                "id_genero": nuevo_genero_id, "director": nuevo_titulo, "ano lanzamiento": nuevo_ano_lanzamiento,
+                "ruta imagen": nueva_imagen}
 
     except:
-        print("chau")
-        return jsonify({"mensaje": "No se ha podido cargar ninguna pelicula"})
+        return jsonify({"mensaje": "No se ha podido agregar la pelicula"})
     
 
 @app.route('/peliculas/<id_pelicula>', methods=["GET"])
@@ -87,8 +90,7 @@ def mostrar_pelicula(id_pelicula):
         return jsonify({"mensaje": "No se ha podido cargar la pelicula seleccionada"})
     
 
-
-@app.route('/peliculas//reparto/<id_pelicula>', methods=["GET"])
+@app.route('/peliculas/reparto/<id_pelicula>', methods=["GET"])
 def mostrar_interpretes(id_pelicula):
 
     try:
@@ -112,6 +114,34 @@ def mostrar_interpretes(id_pelicula):
 
     except:
         return jsonify({"mensaje": "No se han podido cargar los interpretes "})
+    
+
+@app.route('/peliculas/reparto/<id_pelicula>', methods=["POST"])
+def agregar_interprete(id_pelicula):
+
+    try:
+        nuevo_nombre = request.json.get("nombre")
+        nueva_nacionalidad = request.json.get("nacionalidad")
+        nueva_fecha_nacimiento = request.json.get("fecha_nacimiento") 
+        nueva_imagen = request.json.get("imagen")
+        nueva_interpretacion = request.json.get("interpretacion")
+
+        nuevo_interprete = Interprete(nombre=nuevo_nombre, nacionalidad=nueva_nacionalidad, 
+                                fecha_nacimiento=nueva_fecha_nacimiento, imagen=nueva_imagen, 
+                                nombre_interpretacion=nueva_interpretacion)
+        db.session.add(nuevo_interprete)
+        
+        ultimo_interprete = Interprete.query.order_by(Interprete.id.desc()).first()
+
+        nueva_actuacion = Actuacion(pelicula_id=id_pelicula, interprete_id=ultimo_interprete.id)
+        db.session.add(nueva_actuacion)
+        db.session.commit()
+        return jsonify({"exito": "interprete agregado", "nombre": nuevo_nombre, "nacionalidad": nueva_nacionalidad,
+                        "fecha nacimiento": nueva_fecha_nacimiento, "ruta imagen": nueva_imagen, 
+                        "interpretacion": nueva_interpretacion})
+
+    except:
+        return jsonify({"mensaje": "No se ha podido agregar el interprete"})
     
 
 
