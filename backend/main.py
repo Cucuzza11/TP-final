@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect, url_for
 from models import db, Genero, Pelicula, Interprete, Actuacion
 from flask_cors import CORS
+import datetime 
 
 
 app = Flask(__name__)
@@ -62,7 +63,8 @@ def mostrar_pelicula(id_pelicula):
         return jsonify({"mensaje": "No se ha podido cargar la pelicula seleccionada"})
     
 
-@app.route('/peliculas/reparto/<id_pelicula>', methods=["GET"])
+
+@app.route('/peliculas//reparto/<id_pelicula>', methods=["GET"])
 def mostrar_interpretes(id_pelicula):
 
     try:
@@ -71,10 +73,13 @@ def mostrar_interpretes(id_pelicula):
         Actuacion.pelicula_id == Pelicula.id, Pelicula.id == id_pelicula).all()
 
         interpretes_data = []
-        print(interpretes)
+
         for interprete in interpretes:
             interprete_data = {
                 "id": interprete.id,
+                "nombre": interprete.nombre,
+                "nacionalidad": interprete.nacionalidad,
+                "nacimiento": interprete.fecha_nacimiento.isoformat(),
                 "imagen": interprete.imagen,
                 "interpretacion": interprete.nombre_interpretacion,
             }
@@ -84,6 +89,7 @@ def mostrar_interpretes(id_pelicula):
     except:
         return jsonify({"mensaje": "No se han podido cargar los interpretes "})
     
+
 
 if __name__ == '__main__':
     print('Iniciando servidor...')
