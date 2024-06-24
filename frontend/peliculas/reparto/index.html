@@ -19,7 +19,7 @@
             <h1 >Interpretes</h1>
         </div>
     </div> 
-    <a id="boton-agregar" class="btn btn-success" href="/peliculas/crear" >AGREGAR</a> 
+
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
@@ -36,7 +36,14 @@
         
         function parse_pelicula(content) {
             const cast = document.getElementById("cast");  
-            
+
+            //<a id="boton-agregar" class="btn btn-success" href="/peliculas/crear" >AGREGAR</a>
+            const agregar = document.createElement("a");
+            agregar.setAttribute("class", "btn btn-success");
+            agregar.setAttribute("id", "boton-agregar");
+            agregar.setAttribute("href", `/peliculas/crear?id=${id}`);
+
+            cast.append(agregar);
             for (let index = 0; index < content.length; index++) {
 
                 const separador = document.createElement("div");
@@ -111,6 +118,7 @@
                 separador.append(div);
                 cast.append(separador);
             }
+            
         }
         
         function request_error(error) {
@@ -118,7 +126,7 @@
             console.log(error);
         }
 
-        fetch(`http://localhost:5000/peliculas/reparto/${id}`)
+        fetch("http://localhost:5000/peliculas/reparto/" + id)
             .then(response_received)
             .then(parse_pelicula)
             .catch(request_error)
