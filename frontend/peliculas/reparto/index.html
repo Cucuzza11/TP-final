@@ -28,7 +28,6 @@
 
         const params = new URLSearchParams(window.location.search);
         const id = params.get("id");
-        console.log(id)
 
         function response_received(response) {
             return response.json()
@@ -58,29 +57,54 @@
 
                 const div4 = document.createElement("div");
                 div4.setAttribute("class", "col-md-8");
-                /*card.setAttribute("href", `/peliculas/reparto?id=${id}&id=${content[index].id}`);*/
 
                 const card_body = document.createElement("div");
                 card_body.setAttribute("class", "card-body");   
                 
-                const nombre = document.createElement("h3");
-                nombre.setAttribute("class", "card-title");
+                const nombre = document.createElement("label");
+                nombre.setAttribute("class", "display-4");
                 nombre.textContent = content[index].nombre;
 
-                const interpretacion = document.createElement("h4");
-                interpretacion.setAttribute("h4", content[index].interpretacion)
-                interpretacion.textContent = content[index].interpretacion;
+                const interpretacion = document.createElement("h3");
+                interpretacion.setAttribute("class", "text-body-secondary");
+                interpretacion.textContent = "Personaje: " + content[index].interpretacion;
 
-                const nacionalidad = document.createElement("h4");
-                nacionalidad.setAttribute("h4", content[index].nacionalidad)
-                nacionalidad.textContent = content[index].nacionalidad;
+                const nacionalidad = document.createElement("h3");
+                nacionalidad.setAttribute("class", "text-body-secondary");
+                nacionalidad.textContent = "Nacionaliad: " + content[index].nacionalidad;
 
+                const nacimiento = document.createElement("h3");
+                nacimiento.setAttribute("class", "text-body-secondary");
+                nacimiento.textContent = "Fecha de nacimiento: " + content[index].nacimiento;
+
+                const footer = document.createElement("div");
+                footer.setAttribute("class", "card-footer"); 
+
+                const eliminar = document.createElement("button");
+                eliminar.setAttribute("class", "btn btn-danger");
+                eliminar.setAttribute("onclick", "");
+                eliminar.textContent = "Eliminar";
+
+                const editar = document.createElement("a");
+                editar.setAttribute("class", "btn btn-secondary");
+                editar.textContent = "Editar";
+                editar.setAttribute("href", ``);
+                
+                nombre.style.marginBottom = "40px";
+                interpretacion.style.marginBottom = "20px";
+                nacionalidad.style.marginBottom = "20px";
+                nacimiento.style.marginBottom = "20px";
+
+                footer.append(eliminar);                
                 div3.append(imagen);
                 div2.append(div3);
                 card_body.append(nombre);
                 card_body.append(interpretacion);
                 card_body.append(nacionalidad);
+                card_body.append(nacimiento);
                 div4.append(card_body);
+                card_body.append(editar);
+                div3.append(footer);
                 div2.append(div4);
                 div.append(div2);
                 separador.append(div);
