@@ -2,9 +2,6 @@ from flask import Flask, request, jsonify, redirect, url_for
 from models import db, Genero, Pelicula, Interprete, Actuacion
 from flask_cors import CORS
 
-import datetime 
-from datetime import date
-
 
 app = Flask(__name__)
 CORS(app)
@@ -57,7 +54,7 @@ def agregar_pelicula():
         db.session.add(nueva_pelicula)
         db.session.commit()
         
-        return {"exito": "pelicula agregada", "titulo": nuevo_titulo, "descripcion": nueva_descripcion,
+        return {"success": "pelicula agregada", "titulo": nuevo_titulo, "descripcion": nueva_descripcion,
                 "id_genero": nuevo_genero_id, "director": nuevo_titulo, "ano lanzamiento": nuevo_ano_lanzamiento,
                 "ruta imagen": nueva_imagen}
 
@@ -136,7 +133,7 @@ def agregar_interprete(id_pelicula):
         nueva_actuacion = Actuacion(pelicula_id=id_pelicula, interprete_id=ultimo_interprete.id)
         db.session.add(nueva_actuacion)
         db.session.commit()
-        return jsonify({"exito": "interprete agregado", "nombre": nuevo_nombre, "nacionalidad": nueva_nacionalidad,
+        return jsonify({"success": "interprete agregado", "nombre": nuevo_nombre, "nacionalidad": nueva_nacionalidad,
                         "fecha nacimiento": nueva_fecha_nacimiento, "ruta imagen": nueva_imagen, 
                         "interpretacion": nueva_interpretacion})
 
