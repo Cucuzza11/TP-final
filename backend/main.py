@@ -141,6 +141,26 @@ def agregar_interprete(id_pelicula):
         return jsonify({"mensaje": "No se ha podido agregar el interprete"})
     
 
+@app.route('/generos/', methods=["GET"])
+def mostrar_generos():
+
+    try:
+        generos = db.session.query(Genero).all()
+        
+        generos_data = []
+
+        for genero in generos:
+            
+            genero_data ={
+                "id_genero": genero.id,
+                "nombre": genero.nombre
+            }
+            generos_data.append(genero_data)
+        return jsonify(generos_data)
+
+    except:
+        return jsonify({"mensaje": "No se han podido cargar los generos"})
+
 
 if __name__ == '__main__':
     print('Iniciando servidor...')
