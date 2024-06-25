@@ -110,7 +110,8 @@ def mostrar_pelicula(id_pelicula):
             "director": pelicula.director,
             "ano_lanzamiento": pelicula.ano_lanzamiento,
             "imagen": pelicula.imagen
-        }     
+        }  
+        
         return jsonify(pelicula_data)
 
     except:
@@ -126,7 +127,7 @@ def mostrar_interpretes(id_pelicula):
         Actuacion.pelicula_id == Pelicula.id, Pelicula.id == id_pelicula).all()
 
         interpretes_data = []
-        # cambie id por id_interprete pushear este cambio por separado
+
         for interprete in interpretes:
             interprete_data = {
                 "id_interprete": interprete.id,
@@ -136,7 +137,8 @@ def mostrar_interpretes(id_pelicula):
                 "imagen": interprete.imagen,
                 "interpretacion": interprete.nombre_interpretacion,
             }
-            interpretes_data.append(interprete_data)      
+            interpretes_data.append(interprete_data)  
+
         return jsonify(interpretes_data)
 
     except:
@@ -163,13 +165,42 @@ def agregar_interprete(id_pelicula):
         nueva_actuacion = Actuacion(pelicula_id=id_pelicula, interprete_id=ultimo_interprete.id)
         db.session.add(nueva_actuacion)
         db.session.commit()
-        return jsonify({"success": "interprete agregado", "nombre": nuevo_nombre, "nacionalidad": nueva_nacionalidad,
+
+        return jsonify({"success": "interprete agregado exitosamente", "nombre": nuevo_nombre, "nacionalidad": nueva_nacionalidad,
                         "fecha nacimiento": nueva_fecha_nacimiento, "ruta imagen": nueva_imagen, 
                         "interpretacion": nueva_interpretacion})
 
     except:
         return jsonify({"mensaje": "No se ha podido agregar el interprete"})
-    
+
+
+@app.route('/peliculas/reparto/<id_interprete>', methods=["PUT"])
+def editar_interprete(id_interprete):
+
+    try:
+        nuevo_nombre = request.json.get("nombre")
+        nueva_nacionalidad = request.json.get("nacionalidad")
+        nueva_fecha_nacimiento = request.json.get("fecha_nacimiento") 
+        nueva_imagen = request.json.get("imagen")
+        nueva_interpretacion = request.json.get("interpretacion")    
+        
+        interprete_editado = db.session.get(Interprete, id_interprete)
+        
+        interprete_editado.nombre = nuevo_nombre
+        interprete_editado.nacionalidad = nueva_nacionalidad
+        interprete_editado.fecha_nacimiento = nueva_fecha_nacimiento
+        interprete_editado.imagen = nueva_imagen
+        interprete_editado.nombre_interpretacion = nueva_interpretacion
+
+        db.session.commit()
+        
+        return jsonify({"success": "interprete editado exitosamente", "nombre": nuevo_nombre, "nacionalidad": nueva_nacionalidad,
+                        "fecha nacimiento": nueva_fecha_nacimiento, "ruta imagen": nueva_imagen, 
+                        "interpretacion": nueva_interpretacion})
+
+    except:
+        return jsonify({"mensaje": "No se ha podido editar el interprete seleccionado "})
+
 
 @app.route('/generos/', methods=["GET"])
 def mostrar_generos():
