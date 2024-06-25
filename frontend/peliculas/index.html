@@ -58,7 +58,7 @@
         const params = new URLSearchParams(window.location.search);
         const id = params.get("id");
 
-        document.getElementById("buttonEdit").setAttribute("href", `/peliculas/edit?id=${id}`)
+        document.getElementById("buttonEdit").setAttribute("href", `/peliculas/editar?id=${id}`)
         document.getElementById("buttonCast").setAttribute("href", `/peliculas/reparto?id=${id}`)
 
         function response_received(response) {
