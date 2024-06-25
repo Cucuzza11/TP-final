@@ -69,7 +69,6 @@
             document.getElementById("ano_lanzamiento").value = data.ano_lanzamiento
             document.getElementById("imagen").value = data.imagen
             //document.getElementById("genero_id").value = data.genero_id
-                    
         }
 
         fetch(`http://localhost:5000/peliculas/${id}`)
@@ -90,7 +89,6 @@
                 const genero = document.createElement("option");
                 genero.setAttribute("value", content[index].id_genero);
                 genero.textContent = content[index].nombre;
-
                 generos.append(genero);
             }
         }
@@ -104,16 +102,6 @@
             .then(response_received)
             .then(parse_genero)
             .catch(request_error)
-
-        function handle_response(data){
-            console.log(data.success)
-            if (data.success) {
-                window.location.href = `/`
-            }
-            else{
-                alert("ERROR")
-            }
-        }
 
         function handle_response(data){
             if (data.success) {
