@@ -52,6 +52,23 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script>
+        
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+
+        function parse_data_cast(data) {
+
+            document.getElementById("nombre").value = data.nombre
+            document.getElementById("nacionalidad").value = data.nacionalidad
+            document.getElementById("interpretacion").value = data.interpretacion
+            document.getElementById("fecha_nacimiento").value = data.fecha_nacimiento
+            document.getElementById("imagen").value = data.imagen
+        }
+
+        fetch(`http://localhost:5000/peliculas/${id}`)
+            .then((response) => response.json())
+            .then(parse_data_cast)
+            .catch((error) => console.log("ERROR", error))
 
         function response_received(response) {
             return response.json()
