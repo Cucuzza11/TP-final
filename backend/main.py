@@ -25,7 +25,7 @@ def mostrar_peliculas():
         
         for pelicula in peliculas:
             pelicula_data = {
-                "id": pelicula.id,
+                "id_pelicula": pelicula.id,
                 "titulo": pelicula.titulo,
                 "imagen": pelicula.imagen,
             }
@@ -89,7 +89,7 @@ def editar_pelicula(id_pelicula):
                 "ruta imagen": nueva_imagen}
 
     except:
-        return jsonify({"mensaje": "No se ha podido agregar la pelicula"})
+        return jsonify({"mensaje": "No se ha podido editar la pelicula seleccionada"})
     
 
 @app.route('/peliculas/<id_pelicula>', methods=["GET"])
@@ -103,7 +103,7 @@ def mostrar_pelicula(id_pelicula):
         nombre_genero = pelicula_seleccionada[1]
 
         pelicula_data = {
-            "id": pelicula.id,
+            "id_pelicula": pelicula.id,
             "titulo": pelicula.titulo,
             "descripcion": pelicula.descripcion,
             "genero": nombre_genero,
@@ -126,10 +126,10 @@ def mostrar_interpretes(id_pelicula):
         Actuacion.pelicula_id == Pelicula.id, Pelicula.id == id_pelicula).all()
 
         interpretes_data = []
-
+        # cambie id por id_interprete pushear este cambio por separado
         for interprete in interpretes:
             interprete_data = {
-                "id": interprete.id,
+                "id_interprete": interprete.id,
                 "nombre": interprete.nombre,
                 "nacionalidad": interprete.nacionalidad,
                 "nacimiento": interprete.fecha_nacimiento.isoformat(),
