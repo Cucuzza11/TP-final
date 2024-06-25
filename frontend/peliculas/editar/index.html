@@ -58,6 +58,24 @@
     <script>
 
         
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+
+        function parse_data_peliculas(data) {
+
+            document.getElementById("titulo").value = data.titulo
+            document.getElementById("descripcion").value = data.descripcion
+            document.getElementById("director").value = data.director
+            document.getElementById("ano_lanzamiento").value = data.ano_lanzamiento
+            document.getElementById("imagen").value = data.imagen
+            //document.getElementById("genero_id").value = data.genero_id
+                    
+        }
+
+        fetch(`http://localhost:5000/peliculas/${id}`)
+            .then((response) => response.json())
+            .then(parse_data_peliculas)
+            .catch((error) => console.log("ERROR", error))
         
 
         function response_received(response) {
