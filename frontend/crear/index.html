@@ -40,7 +40,7 @@
                                 <input type="text" class="form-control" id="ano_lanzamiento" name="ano_lanzamiento"  required>
                             </div>
                             <label for="genero_id" class="mb-1">Genero</label>
-                            <select class="form-select mb-3" id="genero_id" name="genero_id" required>
+                            <select class="form-select mb-3" id="generos" name="genero_id" required></select>
 
                             </select>
                             <div class="mb-3">
@@ -60,6 +60,33 @@
         crossorigin="anonymous"></script>
 
     <script>
+
+        function response_received(response) {
+            return response.json()
+        }
+        
+        function parse_genero(content) {
+            
+            const generos = document.getElementById("generos");
+            for (let index = 0; index < content.length; index++) {
+
+                const genero = document.createElement("option");
+                genero.setAttribute("value", content[index].id_genero);
+                genero.textContent = content[index].nombre;
+
+                generos.append(genero);
+            }
+        }
+        
+        function request_error(error) {
+            console.log("ERROR")
+            console.log(error);
+        }
+
+        fetch("http://localhost:5000/generos/")
+            .then(response_received)
+            .then(parse_genero)
+            .catch(request_error)
 
         function handle_response(data){
             console.log(data.success)
