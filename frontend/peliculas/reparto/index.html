@@ -14,7 +14,7 @@
 
 <body data-bs-theme="dark"> 
 
-    <div class ="contenedor_principal">
+    <div class ="contenedor_principal" id="boton_agregar">
         <div class="row g-4" id="cast">
             <h1 >Interpretes</h1>
         </div>
@@ -30,20 +30,21 @@
         const params = new URLSearchParams(window.location.search);
         const id = params.get("id");
 
+        const boton_agregar = document.getElementById("boton_agregar");    
+        const agregar = document.createElement("a");
+        agregar.setAttribute("class", "btn btn-success");
+        agregar.setAttribute("id", "boton-agregar");
+        agregar.setAttribute("href", `/peliculas/crear?id=${id}`);
+        agregar.textContent = "Agregar";
+        boton_agregar.append(agregar);
+
         function response_received(response) {
             return response.json()
         }
         
         function parse_pelicula(content) {
+
             const cast = document.getElementById("cast");  
-
-            //<a id="boton-agregar" class="btn btn-success" href="/peliculas/crear" >AGREGAR</a>
-            const agregar = document.createElement("a");
-            agregar.setAttribute("class", "btn btn-success");
-            agregar.setAttribute("id", "boton-agregar");
-            agregar.setAttribute("href", `/peliculas/crear?id=${id}`);
-
-            cast.append(agregar);
             for (let index = 0; index < content.length; index++) {
 
                 const separador = document.createElement("div");
@@ -118,7 +119,6 @@
                 separador.append(div);
                 cast.append(separador);
             }
-            
         }
         
         function request_error(error) {
