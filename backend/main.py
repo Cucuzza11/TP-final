@@ -62,6 +62,36 @@ def agregar_pelicula():
         return jsonify({"mensaje": "No se ha podido agregar la pelicula"})
     
 
+@app.route('/peliculas/<id_pelicula>', methods=["PUT"])
+def editar_pelicula(id_pelicula):
+
+    try:
+        nuevo_titulo = request.json.get("titulo")
+        nueva_descripcion = request.json.get("descripcion")
+        nuevo_genero_id = request.json.get("genero_id") 
+        nuevo_director = request.json.get("director")
+        nuevo_ano_lanzamiento = request.json.get("ano_lanzamiento")
+        nueva_imagen = request.json.get("imagen")
+
+        pelicula_editada = db.session.get(Pelicula, id_pelicula)
+
+        pelicula_editada.titulo = nuevo_titulo    
+        pelicula_editada.descripcion = nueva_descripcion
+        pelicula_editada. genero_id = nuevo_genero_id
+        pelicula_editada.director = nuevo_director
+        pelicula_editada.ano_lanzamiento = nuevo_ano_lanzamiento
+        pelicula_editada.imagen = nueva_imagen
+        
+        db.session.commit()
+    
+        return {"success": "pelicula editada exitosamente", "titulo": nuevo_titulo, "descripcion": nueva_descripcion,
+                "id_genero": nuevo_genero_id, "director": nuevo_titulo, "ano lanzamiento": nuevo_ano_lanzamiento,
+                "ruta imagen": nueva_imagen}
+
+    except:
+        return jsonify({"mensaje": "No se ha podido agregar la pelicula"})
+    
+
 @app.route('/peliculas/<id_pelicula>', methods=["GET"])
 def mostrar_pelicula(id_pelicula):
 
