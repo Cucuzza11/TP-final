@@ -59,7 +59,7 @@
 
         
         const params = new URLSearchParams(window.location.search);
-        const id = params.get("id");
+        const id = params.get("id_pelicula");
 
         function parse_data_peliculas(data) {
 
@@ -71,12 +71,11 @@
             //document.getElementById("genero_id").value = data.genero_id
         }
 
-        fetch(`http://localhost:5000/peliculas/${id}`)
+        fetch("http://localhost:5000/peliculas/" + id)
             .then((response) => response.json())
             .then(parse_data_peliculas)
             .catch((error) => console.log("ERROR", error))
         
-
         function response_received(response) {
             return response.json()
         }
@@ -124,7 +123,7 @@
             const imagen = formData.get("imagen")
             const ano_lanzamiento = formData.get("ano_lanzamiento")
 
-            fetch("http://localhost:5000/peliculas", {
+            fetch("http://localhost:5000/peliculas/" + id, {
                 method: "PUT",
                 headers: {
                     "content-Type": "application/json"
