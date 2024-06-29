@@ -44,7 +44,7 @@
                                 <label for="imagen" class="form-label">imagen</label>
                                 <input type="text" class="form-control" id="imagen" name="imagen" required>
                             </div>
-                            <button type="submit" class="btn btn-success">Crear</button>
+                            <button type="submit" class="btn btn-success">Editar</button>
                         </form>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
 
         
         const params = new URLSearchParams(window.location.search);
-        const id = params.get("id_pelicula");
+        const id_pelicula = params.get("id_pelicula");
 
         function parse_data_peliculas(data) {
 
@@ -71,7 +71,7 @@
             //document.getElementById("genero_id").value = data.genero_id
         }
 
-        fetch("http://localhost:5000/peliculas/" + id)
+        fetch("http://localhost:5000/peliculas/" + id_pelicula)
             .then((response) => response.json())
             .then(parse_data_peliculas)
             .catch((error) => console.log("ERROR", error))
@@ -104,7 +104,7 @@
 
         function handle_response(data){
             if (data.success) {
-                window.location.href = `/`
+                window.location.href = "/"
             }
             else{
                 alert("ERROR")
@@ -115,7 +115,6 @@
             event.preventDefault()
 
             const formData = new FormData(event.target)
-
             const titulo = formData.get("titulo")
             const descripcion = formData.get("descripcion")
             const genero_id = formData.get("genero_id")
@@ -123,7 +122,7 @@
             const imagen = formData.get("imagen")
             const ano_lanzamiento = formData.get("ano_lanzamiento")
 
-            fetch("http://localhost:5000/peliculas/" + id, {
+            fetch("http://localhost:5000/peliculas/" + id_pelicula, {
                 method: "PUT",
                 headers: {
                     "content-Type": "application/json"
