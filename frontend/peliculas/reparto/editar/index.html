@@ -18,7 +18,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">Edit Cast</h2>
-                        <form onsubmit="editar_cast(event)">
+                        <form onsubmit="edit_cast(event)">
                             <br>
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre</label>
@@ -33,8 +33,8 @@
                                 <input type="text" class="form-control" id="interpretacion" name="interpretacion" required>
                             </div>
                             <div class="mb-3">
-                                <label for="nacimiento" class="form-label">Fecha de nacimiento</label>
-                                <input type="text" class="form-control" id="nacimiento" name="nacimiento"  required>
+                                <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
+                                <input type="text" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento"  required>
                             </div>
                             <div class="mb-3">
                                 <label for="imagen" class="form-label">imagen</label>
@@ -55,13 +55,14 @@
         
         const params = new URLSearchParams(window.location.search);
         const id_interprete = params.get("id_interprete");
+        const id_pelicula = params.get("id_pelicula");
 
         function parse_data_cast(data) {
 
             document.getElementById("nombre").value = data.nombre
             document.getElementById("nacionalidad").value = data.nacionalidad
             document.getElementById("interpretacion").value = data.interpretacion
-            document.getElementById("nacimiento").value = data.nacimiento
+            document.getElementById("fecha_nacimiento").value = data.fecha_nacimiento
             document.getElementById("imagen").value = data.imagen
         }
 
@@ -70,20 +71,17 @@
             .then(parse_data_cast)
             .catch((error) => console.log("ERROR", error))
 
-        function response_received(response) {
-            return response.json()
-        }
-
         function handle_response(data){
+            console.log(data.success)
             if (data.success) {
-                window.location.href = `/`
+                window.location.href = "/peliculas/reparto?id_pelicula=" + id_pelicula
             }
             else{
                 alert("ERROR")
             }
         }
 
-        function edit_movie(event) {
+        function edit_cast(event) {
             event.preventDefault()
 
             const formData = new FormData(event.target)
@@ -92,9 +90,9 @@
             const nacionalidad = formData.get("nacionalidad")
             const interpretacion = formData.get("interpretacion")
             const imagen = formData.get("imagen")
-            const nacimiento = formData.get("nacimiento")
+            const fecha_nacimiento = formData.get("fecha_nacimiento")
 
-            fetch("http://localhost:5000/peliculas/reparto" + id_interprete, {
+            fetch("http://localhost:5000/peliculas/reparto/" + id_interprete, {
                 method: "PUT",
                 headers: {
                     "content-Type": "application/json"
@@ -103,7 +101,7 @@
                     nombre: nombre,
                     nacionalidad: nacionalidad,
                     interpretacion: interpretacion,
-                    nacimiento: nacimiento,
+                    fecha_nacimiento: fecha_nacimiento,
                     imagen: imagen,
                 })
             })
