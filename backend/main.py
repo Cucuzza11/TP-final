@@ -221,6 +221,26 @@ def mostrar_generos():
 
     except:
         return jsonify({"mensaje": "No se han podido cargar los generos"})
+    
+
+@app.route('/interprete/<id_interprete>', methods=["GET"])
+def mostrar_interprete(id_interprete):
+
+    try:
+        interprete = db.session.get(Interprete, id_interprete)
+        
+        interprete_data = {
+            "nombre": interprete.nombre,
+            "nacionalidad": interprete.nacionalidad,
+            "nacimiento": interprete.fecha_nacimiento.isoformat(),
+            "imagen": interprete.imagen,
+            "interpretacion": interprete.nombre_interpretacion
+        }
+
+        return jsonify(interprete_data)
+
+    except:
+        return jsonify({"mensaje": "No se ha podido cargar el interprete"})
 
 
 if __name__ == '__main__':
