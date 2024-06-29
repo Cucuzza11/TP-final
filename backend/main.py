@@ -81,7 +81,6 @@ def editar_pelicula(id_pelicula):
         pelicula_editada.director = nuevo_director
         pelicula_editada.ano_lanzamiento = nuevo_ano_lanzamiento
         pelicula_editada.imagen = nueva_imagen
-        
         db.session.commit()
     
         return {"success": "pelicula editada exitosamente", "titulo": nuevo_titulo, "descripcion": nueva_descripcion,
@@ -116,7 +115,29 @@ def mostrar_pelicula(id_pelicula):
 
     except:
         return jsonify({"mensaje": "No se ha podido cargar la pelicula seleccionada"})
-    
+
+
+@app.route('/peliculas/<id_pelicula>', methods=["DELETE"])
+def eliminar_pelicula(id_pelicula):
+
+    try:
+        pelicula_a_eliminar = db.session.get(Pelicula, id_pelicula)
+        
+        actuaciones_a_eliminar = db.session.query(Actuacion).filter(Actuacion.pelicula_id == id_pelicula).all()
+        
+        for actuacion_a_eliminar in actuaciones_a_eliminar:
+            interprete_a_eliminar = db.session.get(Interprete, actuacion_a_eliminar.interprete_id)
+            db.session.delete( actuacion_a_eliminar)
+            db.session.delete(interprete_a_eliminar)
+
+        db.session.delete(pelicula_a_eliminar)
+        db.session.commit()
+        
+        return jsonify({"success": "pelicula eliminada exitosamente"})
+
+    except:
+        return jsonify({"mensaje": "No se ha podido cargar la pelicula seleccionada"})
+
 
 @app.route('/peliculas/reparto/<id_pelicula>', methods=["GET"])
 def mostrar_interpretes(id_pelicula):
