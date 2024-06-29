@@ -29,34 +29,34 @@
             return response.json()
         }
         
-        function parse_peliculas(contenido) {
+        function parse_peliculas(content) {
             
             const pelicula = document.getElementById("peliculas");
 
-            for (let index = 0; index < contenido.length; index++) {
+            for (let index = 0; index < content.length; index++) {
 
                 const item = document.createElement("div");
                 item.setAttribute("class", "col-6 col-md-4 col-lg-3 col-xl-2");
 
                 const card = document.createElement("a");
                 card.setAttribute("class", "card text-decoration-none");
-                card.setAttribute("href", `/peliculas?id=${contenido[index].id}`);
+                card.setAttribute("href", `/peliculas?id_pelicula=${content[index].id_pelicula}`);
 
                 const imagen = document.createElement("img");
                 imagen.setAttribute("class", "img-thumbnail");
-                imagen.setAttribute("src", contenido[index].imagen)
+                imagen.setAttribute("src", content[index].imagen)
 
                 const card_body = document.createElement("div");
                 card_body.setAttribute("class", "card-body");
                 
                 const titulo = document.createElement("h6");
                 titulo.setAttribute("class", "card-title");
-                titulo.setAttribute("h6", contenido[index].titulo)
-                titulo.textContent = contenido[index].titulo;
+                titulo.setAttribute("h6", content[index].titulo)
+                titulo.textContent = content[index].titulo;
 
                 const ref = document.createElement("a");
                 ref.setAttribute("class", "btn btn-primary");
-                ref.setAttribute("href", `/peliculas?id=${contenido[index].id}`);
+                ref.setAttribute("href", `/peliculas?id_pelicula=${content[index].id_pelicula}`);
                 ref.textContent = "Info";
 
                 card_body.append(titulo);
@@ -73,7 +73,7 @@
             console.log(error);
         }
 
-        fetch("http://localhost:5000/peliculas")
+        fetch("http://localhost:5000/peliculas/")
             .then(response_received)
             .then(parse_peliculas)
             .catch(request_error)
