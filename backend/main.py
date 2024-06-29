@@ -136,7 +136,7 @@ def eliminar_pelicula(id_pelicula):
         return jsonify({"success": "pelicula eliminada exitosamente"})
 
     except:
-        return jsonify({"mensaje": "No se ha podido cargar la pelicula seleccionada"})
+        return jsonify({"mensaje": "No se ha podido eliminar la pelicula seleccionada"})
 
 
 @app.route('/peliculas/reparto/<id_pelicula>', methods=["GET"])
@@ -154,7 +154,7 @@ def mostrar_interpretes(id_pelicula):
                 "id_interprete": interprete.id,
                 "nombre": interprete.nombre,
                 "nacionalidad": interprete.nacionalidad,
-                "nacimiento": interprete.fecha_nacimiento.isoformat(),
+                "fecha_nacimiento": interprete.fecha_nacimiento.isoformat(),
                 "imagen": interprete.imagen,
                 "interpretacion": interprete.nombre_interpretacion,
             }
@@ -221,6 +221,24 @@ def editar_interprete(id_interprete):
 
     except:
         return jsonify({"mensaje": "No se ha podido editar el interprete seleccionado "})
+    
+
+@app.route('/peliculas/reparto/<id_interprete>', methods=["DELETE"])
+def eliminar_interprete(id_interprete):
+
+    try:
+        interprete_a_eliminar = db.session.get(Interprete, id_interprete)
+        
+        actuacion_a_eliminar = db.session.query(Actuacion).filter(Actuacion.interprete_id == id_interprete).first()
+        
+        db.session.delete(actuacion_a_eliminar)
+        db.session.delete(interprete_a_eliminar)
+        db.session.commit()
+        
+        return jsonify({"success": "interprete eliminado exitosamente"})
+
+    except:
+        return jsonify({"mensaje": "No se ha podido eliminar el interprete seleccionado"})
 
 
 @app.route('/generos/', methods=["GET"])
@@ -253,7 +271,7 @@ def mostrar_interprete(id_interprete):
         interprete_data = {
             "nombre": interprete.nombre,
             "nacionalidad": interprete.nacionalidad,
-            "nacimiento": interprete.fecha_nacimiento.isoformat(),
+            "fecha_nacimiento": interprete.fecha_nacimiento.isoformat(),
             "imagen": interprete.imagen,
             "interpretacion": interprete.nombre_interpretacion
         }
