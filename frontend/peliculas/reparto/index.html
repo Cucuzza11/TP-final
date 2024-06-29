@@ -97,7 +97,7 @@
                 const editar = document.createElement("a");
                 editar.setAttribute("class", "btn btn-secondary");
                 editar.textContent = "Editar";
-                editar.setAttribute("href", `/peliculas/reparto/editar?id=${id}`);
+                editar.setAttribute("href", `/peliculas/reparto/editar?id_pelicula=${id}&id_interprete=${content[index].id_interprete}`);
                 
                 nombre.style.marginBottom = "40px";
                 interpretacion.style.marginBottom = "20px";
