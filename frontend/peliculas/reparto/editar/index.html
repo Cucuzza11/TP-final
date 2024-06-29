@@ -33,8 +33,8 @@
                                 <input type="text" class="form-control" id="interpretacion" name="interpretacion" required>
                             </div>
                             <div class="mb-3">
-                                <label for="fecha_nacimiento" class="form-label">Fecha de lanzamiento</label>
-                                <input type="text" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento"  required>
+                                <label for="nacimiento" class="form-label">Fecha de nacimiento</label>
+                                <input type="text" class="form-control" id="nacimiento" name="nacimiento"  required>
                             </div>
                             <div class="mb-3">
                                 <label for="imagen" class="form-label">imagen</label>
@@ -54,18 +54,18 @@
     <script>
         
         const params = new URLSearchParams(window.location.search);
-        const id = params.get("id_pelicula");
+        const id_interprete = params.get("id_interprete");
 
         function parse_data_cast(data) {
 
             document.getElementById("nombre").value = data.nombre
             document.getElementById("nacionalidad").value = data.nacionalidad
             document.getElementById("interpretacion").value = data.interpretacion
-            document.getElementById("fecha_nacimiento").value = data.fecha_nacimiento
+            document.getElementById("nacimiento").value = data.nacimiento
             document.getElementById("imagen").value = data.imagen
         }
 
-        fetch("http://localhost:5000/peliculas/" + id)
+        fetch("http://localhost:5000/interprete/" + id_interprete)
             .then((response) => response.json())
             .then(parse_data_cast)
             .catch((error) => console.log("ERROR", error))
@@ -92,9 +92,9 @@
             const nacionalidad = formData.get("nacionalidad")
             const interpretacion = formData.get("interpretacion")
             const imagen = formData.get("imagen")
-            const fecha_nacimiento = formData.get("fecha_nacimiento")
+            const nacimiento = formData.get("nacimiento")
 
-            fetch("http://localhost:5000/peliculas", {
+            fetch("http://localhost:5000/peliculas/reparto" + id_interprete, {
                 method: "PUT",
                 headers: {
                     "content-Type": "application/json"
@@ -103,7 +103,7 @@
                     nombre: nombre,
                     nacionalidad: nacionalidad,
                     interpretacion: interpretacion,
-                    fecha_nacimiento: fecha_nacimiento,
+                    nacimiento: nacimiento,
                     imagen: imagen,
                 })
             })
