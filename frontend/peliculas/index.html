@@ -56,11 +56,11 @@
     <script>
 
         const params = new URLSearchParams(window.location.search);
-        const id = params.get("id_pelicula");
+        const id_pelicula = params.get("id_pelicula");
         
 
-        document.getElementById("buttonEdit").setAttribute("href", `/peliculas/editar?id_pelicula=${id}`)
-        document.getElementById("buttonCast").setAttribute("href", `/peliculas/reparto?id_pelicula=${id}`)
+        document.getElementById("buttonEdit").setAttribute("href", `/peliculas/editar?id_pelicula=${id_pelicula}`)
+        document.getElementById("buttonCast").setAttribute("href", `/peliculas/reparto?id_pelicula=${id_pelicula}`)
 
         function response_received(response) {
             return response.json()
@@ -101,7 +101,7 @@
             console.log(error);
         }
 
-        fetch("http://localhost:5000/peliculas/" + id)
+        fetch("http://localhost:5000/peliculas/" + id_pelicula)
             .then(response_received)
             .then(parse_pelicula)
             .catch(request_error)
