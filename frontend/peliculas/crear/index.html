@@ -58,12 +58,12 @@
     <script>
 
         const params = new URLSearchParams(window.location.search);
-        const id = params.get("id_pelicula");
+        const id_pelicula = params.get("id_pelicula");
 
         function handle_response(data){
 
             if (data.success) {
-                window.location.href = `/peliculas/reparto?id_pelicula=${id}`
+                window.location.href = `/peliculas/reparto?id_pelicula=${id_pelicula}`
             }
             else{
                 alert("ERROR")
@@ -82,7 +82,7 @@
             const interpretacion = formData.get("interpretacion")
             const imagen = formData.get("imagen") 
 
-            fetch("http://localhost:5000/peliculas/reparto/" + id,  {
+            fetch("http://localhost:5000/peliculas/reparto/" + id_pelicula,  {
                 method: "POST",
                 headers: {
                         "content-Type": "application/json"
