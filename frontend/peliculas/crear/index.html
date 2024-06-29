@@ -58,12 +58,12 @@
     <script>
 
         const params = new URLSearchParams(window.location.search);
-        const id = params.get("id");
+        const id = params.get("id_pelicula");
 
         function handle_response(data){
 
             if (data.success) {
-                window.location.href = `/peliculas/reparto?id=${id}`
+                window.location.href = `/peliculas/reparto?id_pelicula=${id}`
             }
             else{
                 alert("ERROR")
