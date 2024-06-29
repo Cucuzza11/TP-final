@@ -65,7 +65,7 @@
             document.getElementById("imagen").value = data.imagen
         }
 
-        fetch(`http://localhost:5000/peliculas/${id}`)
+        fetch("http://localhost:5000/peliculas/" + id)
             .then((response) => response.json())
             .then(parse_data_cast)
             .catch((error) => console.log("ERROR", error))
