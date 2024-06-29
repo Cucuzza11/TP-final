@@ -27,14 +27,15 @@
 
     <script>
 
+        
         const params = new URLSearchParams(window.location.search);
-        const id = params.get("id_pelicula");
+        const id_pelicula = params.get("id_pelicula");
 
         const boton_agregar = document.getElementById("boton_agregar");    
         const agregar = document.createElement("a");
         agregar.setAttribute("class", "btn btn-success");
         agregar.setAttribute("id", "boton-agregar");
-        agregar.setAttribute("href", `/peliculas/crear?id_pelicula=${id}`);
+        agregar.setAttribute("href", "/peliculas/crear?id_pelicula=" + id_pelicula);
         agregar.textContent = "Agregar";
         boton_agregar.append(agregar);
 
@@ -84,7 +85,7 @@
 
                 const nacimiento = document.createElement("h3");
                 nacimiento.setAttribute("class", "text-body-secondary");
-                nacimiento.textContent = "Fecha de nacimiento: " + content[index].nacimiento;
+                nacimiento.textContent = "Fecha de nacimiento: " + content[index].fecha_nacimiento;
 
                 const footer = document.createElement("div");
                 footer.setAttribute("class", "card-footer"); 
@@ -97,7 +98,7 @@
                 const editar = document.createElement("a");
                 editar.setAttribute("class", "btn btn-secondary");
                 editar.textContent = "Editar";
-                editar.setAttribute("href", `/peliculas/reparto/editar?id_pelicula=${id}&id_interprete=${content[index].id_interprete}`);
+                editar.setAttribute("href", `/peliculas/reparto/editar?id_pelicula=${id_pelicula}&id_interprete=${content[index].id_interprete}`);
                 
                 nombre.style.marginBottom = "40px";
                 interpretacion.style.marginBottom = "20px";
@@ -126,7 +127,7 @@
             console.log(error);
         }
 
-        fetch("http://localhost:5000/peliculas/reparto/" + id)
+        fetch("http://localhost:5000/peliculas/reparto/" + id_pelicula)
             .then(response_received)
             .then(parse_pelicula)
             .catch(request_error)
