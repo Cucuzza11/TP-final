@@ -59,7 +59,7 @@
 
     <script>
         
-        function parse_gender(content) {
+        function parse_genders(content) {
             
             const genders = document.getElementById("generos");
             for (let index = 0; index < content.length; index++) {
@@ -68,7 +68,7 @@
                 gender.setAttribute("value", content[index].id_gender);
                 gender.textContent = content[index].nombre;
 
-                genders.append(genero);
+                genders.append(gender);
             }
         }
 
