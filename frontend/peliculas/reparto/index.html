@@ -14,7 +14,7 @@
 
 <body data-bs-theme="dark"> 
 
-    <div class ="contenedor_principal" id="boton_agregar">
+    <div class ="contenedor_principal" id="add_button">
         <div class="row g-4" id="cast">
             <h1 >Interpretes</h1>
         </div>
@@ -27,29 +27,24 @@
 
     <script>
 
-        
         const params = new URLSearchParams(window.location.search);
         const id_pelicula = params.get("id_pelicula");
 
-        const boton_agregar = document.getElementById("boton_agregar");    
+        const add_button = document.getElementById("add_button");    
         const agregar = document.createElement("a");
         agregar.setAttribute("class", "btn btn-success");
         agregar.setAttribute("id", "boton-agregar");
         agregar.setAttribute("href", "/peliculas/crear?id_pelicula=" + id_pelicula);
         agregar.textContent = "Agregar";
-        boton_agregar.append(agregar);
-
-        function response_received(response) {
-            return response.json()
-        }
+        add_button.append(agregar);
         
         function parse_pelicula(content) {
 
             const cast = document.getElementById("cast");  
             for (let index = 0; index < content.length; index++) {
 
-                const separador = document.createElement("div");
-                separador.setAttribute("class", "separador");
+                const separator = document.createElement("div");
+                separator.setAttribute("class", "separador");
 
                 const div = document.createElement("div");
                 div.setAttribute("class", "card mb-4");
@@ -61,9 +56,9 @@
                 const div3 = document.createElement("div");
                 div3.setAttribute("class", "col-md-4");
             
-                const imagen = document.createElement("img");
-                imagen.setAttribute("class", "img-fluid rounded-start");
-                imagen.setAttribute("src", content[index].imagen)
+                const image = document.createElement("img");
+                image.setAttribute("class", "img-fluid rounded-start");
+                image.setAttribute("src", content[index].imagen)
 
                 const div4 = document.createElement("div");
                 div4.setAttribute("class", "col-md-8");
@@ -71,66 +66,87 @@
                 const card_body = document.createElement("div");
                 card_body.setAttribute("class", "card-body");   
                 
-                const nombre = document.createElement("label");
-                nombre.setAttribute("class", "display-4");
-                nombre.textContent = content[index].nombre;
+                const name = document.createElement("label");
+                name.setAttribute("class", "display-4");
+                name.textContent = content[index].nombre;
 
-                const interpretacion = document.createElement("h3");
-                interpretacion.setAttribute("class", "text-body-secondary");
-                interpretacion.textContent = "Personaje: " + content[index].interpretacion;
+                const interpretation = document.createElement("h3");
+                interpretation.setAttribute("class", "text-body-secondary");
+                interpretation.textContent = "Personaje: " + content[index].interpretacion;
 
-                const nacionalidad = document.createElement("h3");
-                nacionalidad.setAttribute("class", "text-body-secondary");
-                nacionalidad.textContent = "Nacionaliad: " + content[index].nacionalidad;
+                const nationality = document.createElement("h3");
+                nationality.setAttribute("class", "text-body-secondary");
+                nationality.textContent = "Nacionaliad: " + content[index].nacionalidad;
 
-                const nacimiento = document.createElement("h3");
-                nacimiento.setAttribute("class", "text-body-secondary");
-                nacimiento.textContent = "Fecha de nacimiento: " + content[index].fecha_nacimiento;
+                const birthdate = document.createElement("h3");
+                birthdate.setAttribute("class", "text-body-secondary");
+                birthdate.textContent = "Fecha de nacimiento: " + content[index].fecha_nacimiento;
 
                 const footer = document.createElement("div");
                 footer.setAttribute("class", "card-footer"); 
 
-                const eliminar = document.createElement("button");
-                eliminar.setAttribute("class", "btn btn-danger");
-                eliminar.setAttribute("onclick", "");
-                eliminar.textContent = "Eliminar";
+                const remove = document.createElement("button");
+                remove.setAttribute("class", "btn btn-danger");
+                remove.setAttribute("onclick", `remove_cast(${content[index].id_interprete})`);
+                remove.textContent = "Eliminar";
 
                 const editar = document.createElement("a");
                 editar.setAttribute("class", "btn btn-secondary");
                 editar.textContent = "Editar";
                 editar.setAttribute("href", `/peliculas/reparto/editar?id_pelicula=${id_pelicula}&id_interprete=${content[index].id_interprete}`);
                 
-                nombre.style.marginBottom = "40px";
-                interpretacion.style.marginBottom = "20px";
-                nacionalidad.style.marginBottom = "20px";
-                nacimiento.style.marginBottom = "20px";
+                name.style.marginBottom = "40px";
+                interpretation.style.marginBottom = "20px";
+                nationality.style.marginBottom = "20px";
+                birthdate.style.marginBottom = "20px";
 
-                footer.append(eliminar);                
-                div3.append(imagen);
+                footer.append(remove);                
+                div3.append(image);
                 div2.append(div3);
-                card_body.append(nombre);
-                card_body.append(interpretacion);
-                card_body.append(nacionalidad);
-                card_body.append(nacimiento);
+                card_body.append(name);
+                card_body.append(interpretation);
+                card_body.append(nationality);
+                card_body.append(birthdate);
                 div4.append(card_body);
                 card_body.append(editar);
                 div3.append(footer);
                 div2.append(div4);
                 div.append(div2);
-                separador.append(div);
-                cast.append(separador);
+                separator.append(div);
+                cast.append(separator);
             }
         }
         
-        function request_error(error) {
-            console.log("ERROR")
-            console.log(error);
+        function handle_error(error) {
+            console.log("Error!", error)
         }
 
         fetch("http://localhost:5000/peliculas/reparto/" + id_pelicula)
-            .then(response_received)
+            .then((res) => res.json())
             .then(parse_pelicula)
-            .catch(request_error)
+            .catch(handle_error)
+
+        function delete_response(data) {
+            if (data.success) {
+                window.location.href = "/";
+            }
+            else {
+                alert("Ocurrio un error. Intenete denuevo")
+            }
+        }
+
+        function remove_cast(id_interprete) {
+            const confirmation = confirm("Esta seguro que desea eliminar este interprete?");
+            if(!confirmation) {
+                return;
+            }
+
+            fetch("http://localhost:5000/peliculas/reparto/" + id_interprete , { method: "DELETE" })
+            .then((res) => res.json()) 
+            .then(delete_response)
+            .catch(handle_error)
+        }
+
     </script> 
 </body>
 
