@@ -117,7 +117,7 @@
             }
         }
         
-        fetch("http://localhost:5000/peliculas/reparto/" + id_movie)
+        fetch("http://localhost:5000/peliculas/" + id_movie + "/reparto/")
             .then((res) => res.json())
             .then(parse_cast)
             .catch((error) => console.log("ERROR", error))
