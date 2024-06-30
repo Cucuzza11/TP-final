@@ -125,7 +125,13 @@ def editar_pelicula(id_pelicula):
         nuevo_ano_lanzamiento = request.json.get("ano_lanzamiento")
         nueva_imagen = request.json.get("imagen")
 
+        if(nuevo_ano_lanzamiento < AÑO_PRIMERA_PELICULA or nuevo_ano_lanzamiento > AÑO_ACTUAL):
+            return jsonify({"mensaje": "El ano ingresado no es valido"})
+
         pelicula_editada = db.session.get(Pelicula, id_pelicula)
+
+        if(not pelicula_editada):
+            return jsonify({"mensaje": "La pelicula que desea editar no existe"})
 
         pelicula_editada.titulo = nuevo_titulo    
         pelicula_editada.descripcion = nueva_descripcion
@@ -139,7 +145,8 @@ def editar_pelicula(id_pelicula):
                 "id_genero": nuevo_genero_id, "director": nuevo_titulo, "ano lanzamiento": nuevo_ano_lanzamiento,
                 "ruta imagen": nueva_imagen}
 
-    except:
+    except Exception as error:
+        print(error)
         return jsonify({"mensaje": "No se ha podido editar la pelicula seleccionada"})
     
 
