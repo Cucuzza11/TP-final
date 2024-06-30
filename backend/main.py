@@ -3,6 +3,10 @@ from models import db, Genero, Pelicula, Interprete, Actuacion
 from flask_cors import CORS
 
 
+AÑO_PRIMERA_PELICULA = 1895
+AÑO_ACTUAL = 2024
+
+
 app = Flask(__name__)
 CORS(app)
 port = 5000
@@ -58,9 +62,17 @@ def agregar_pelicula():
         nuevo_ano_lanzamiento = request.json.get("ano_lanzamiento")
         nueva_imagen = request.json.get("imagen")
 
+        if(not isinstance(nuevo_ano_lanzamiento,(int)) or 
+            nuevo_ano_lanzamiento < AÑO_PRIMERA_PELICULA or nuevo_ano_lanzamiento > AÑO_ACTUAL):
+            return jsonify({"mensaje": "El ano ingresado no es valido"})
+
         nueva_pelicula = Pelicula(titulo=nuevo_titulo, descripcion=nueva_descripcion, 
                                 genero_id=nuevo_genero_id, director=nuevo_director, 
                                 ano_lanzamiento=nuevo_ano_lanzamiento, imagen=nueva_imagen)
+        
+        if(not nueva_pelicula):
+            return({"mensaje": "Los datos ingresados no son validos"})
+
         db.session.add(nueva_pelicula)
         db.session.commit()
         
@@ -68,7 +80,8 @@ def agregar_pelicula():
                 "id_genero": nuevo_genero_id, "director": nuevo_titulo, "ano lanzamiento": nuevo_ano_lanzamiento,
                 "ruta imagen": nueva_imagen}
 
-    except:
+    except Exception as error:
+        print(error)
         return jsonify({"mensaje": "No se ha podido agregar la pelicula"})
     
 
