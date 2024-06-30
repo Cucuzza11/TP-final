@@ -62,8 +62,7 @@ def agregar_pelicula():
         nuevo_ano_lanzamiento = request.json.get("ano_lanzamiento")
         nueva_imagen = request.json.get("imagen")
 
-        if(not isinstance(nuevo_ano_lanzamiento,(int)) or 
-            nuevo_ano_lanzamiento < AÑO_PRIMERA_PELICULA or nuevo_ano_lanzamiento > AÑO_ACTUAL):
+        if(nuevo_ano_lanzamiento < AÑO_PRIMERA_PELICULA or nuevo_ano_lanzamiento > AÑO_ACTUAL):
             return jsonify({"mensaje": "El ano ingresado no es valido"})
 
         nueva_pelicula = Pelicula(titulo=nuevo_titulo, descripcion=nueva_descripcion, 
@@ -92,6 +91,9 @@ def mostrar_pelicula(id_pelicula):
         pelicula_seleccionada = db.session.query(Pelicula).join(Genero
         ).add_columns(Genero.nombre).filter(Pelicula.id == id_pelicula).first()
         
+        if(not pelicula_seleccionada):
+            return jsonify({"mensaje": "la pelicula seleccionada no existe"})
+
         pelicula = pelicula_seleccionada[0]
         nombre_genero = pelicula_seleccionada[1]
 
@@ -107,7 +109,8 @@ def mostrar_pelicula(id_pelicula):
         
         return jsonify(pelicula_data)
 
-    except:
+    except Exception as error:
+        print(error)
         return jsonify({"mensaje": "No se ha podido cargar la pelicula seleccionada"})
     
 
