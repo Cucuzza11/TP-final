@@ -37,7 +37,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="ano_lanzamiento" class="form-label">Año de lanzamiento</label>
-                                <input type="text" class="form-control" id="ano_lanzamiento" name="ano_lanzamiento"  required>
+                                <input type="number" class="form-control" id="ano_lanzamiento" name="ano_lanzamiento"  required>
                             </div>
                             <label for="genero_id" class="mb-1">Genero</label>
                             <select class="form-select mb-3" id="generos" name="genero_id" required></select>
@@ -92,11 +92,17 @@
             const formData = new FormData(event.target)
 
             const titulo = formData.get("titulo")
+            console.log(titulo)
             const descripcion = formData.get("descripcion")
+            console.log(descripcion)
             const genero_id = formData.get("genero_id")
+            console.log(genero_id)
             const director = formData.get("director")
+            console.log(director)
             const imagen = formData.get("imagen")
+            console.log(imagen)
             const ano_lanzamiento = formData.get("ano_lanzamiento")
+            console.log(ano_lanzamiento)
 
             fetch("http://localhost:5000/peliculas/", {
                 method: "POST",
