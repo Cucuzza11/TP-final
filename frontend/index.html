@@ -14,7 +14,7 @@
 
 <body data-bs-theme="dark">
     <div class ="contenedor_principal">
-        <div class="row g-4" id="peliculas">
+        <div class="row g-4" id="films">
             <h1 >Peliculas</h1>
         </div>
     </div> 
@@ -25,13 +25,9 @@
 
     <script>
 
-        function response_received(response) {
-            return response.json()
-        }
-        
-        function parse_peliculas(content) {
+        function parse_films(content) {
             
-            const pelicula = document.getElementById("peliculas");
+            const movie = document.getElementById("films");
 
             for (let index = 0; index < content.length; index++) {
 
@@ -42,41 +38,40 @@
                 card.setAttribute("class", "card text-decoration-none");
                 card.setAttribute("href", `/peliculas?id_pelicula=${content[index].id_pelicula}`);
 
-                const imagen = document.createElement("img");
-                imagen.setAttribute("class", "img-thumbnail");
-                imagen.setAttribute("src", content[index].imagen)
+                const image = document.createElement("img");
+                image.setAttribute("class", "img-thumbnail");
+                image.setAttribute("src", content[index].imagen)
 
                 const card_body = document.createElement("div");
                 card_body.setAttribute("class", "card-body");
                 
-                const titulo = document.createElement("h6");
-                titulo.setAttribute("class", "card-title");
-                titulo.setAttribute("h6", content[index].titulo)
-                titulo.textContent = content[index].titulo;
+                const title = document.createElement("h6");
+                title.setAttribute("class", "card-title");
+                title.setAttribute("h6", content[index].titulo)
+                title.textContent = content[index].titulo;
 
-                const ref = document.createElement("a");
-                ref.setAttribute("class", "btn btn-primary");
-                ref.setAttribute("href", `/peliculas?id_pelicula=${content[index].id_pelicula}`);
-                ref.textContent = "Info";
+                const information_button = document.createElement("a");
+                information_button.setAttribute("class", "btn btn-primary");
+                information_button.setAttribute("href", `/peliculas?id_pelicula=${content[index].id_pelicula}`);
+                information_button.textContent = "Info";
 
-                card_body.append(titulo);
-                card_body.append(ref);
-                card.append(imagen);
+                card_body.append(title);
+                card_body.append(information_button);
+                card.append(image);
                 card.append(card_body);
                 item.append(card);
-                pelicula.append(item);
+                movie.append(item);
             }
         }
         
-        function request_error(error) {
-            console.log("ERROR")
-            console.log(error);
+        function handle_error(error) {
+            console.log("Error!", error)
         }
 
         fetch("http://localhost:5000/peliculas/")
-            .then(response_received)
-            .then(parse_peliculas)
-            .catch(request_error)
+            .then((res) => res.json())
+            .then(parse_films)
+            .catch(handle_error)
     </script> 
 </body>
 
