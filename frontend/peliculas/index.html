@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-danger" onclick="">Eliminar</button>
+                        <button class="btn btn-danger" onclick="remove_movie()">Eliminar</button>
                         <a id = "buttonEdit" class="btn btn-secondary" >Editar</a>  
                     </div> 
                 </div>
@@ -58,17 +58,12 @@
         const params = new URLSearchParams(window.location.search);
         const id_pelicula = params.get("id_pelicula");
         
-
-        document.getElementById("buttonEdit").setAttribute("href", `/peliculas/editar?id_pelicula=${id_pelicula}`)
-        document.getElementById("buttonCast").setAttribute("href", `/peliculas/reparto?id_pelicula=${id_pelicula}`)
-
-        function response_received(response) {
-            return response.json()
-        }
+        document.getElementById("buttonEdit").setAttribute("href", "/peliculas/editar?id_pelicula=" + id_pelicula)
+        document.getElementById("buttonCast").setAttribute("href", "/peliculas/reparto?id_pelicula=" + id_pelicula)
         
         function parse_pelicula(content) {
 
-            const films = document.getElementById("fils")
+            const films = document.getElementById("films")
             
             const titulo = document.getElementById("titulo");
             titulo.innerText = content.titulo;
@@ -96,15 +91,38 @@
             }
         }
         
-        function request_error(error) {
-            console.log("ERROR")
-            console.log(error);
+        function handle_error(error) {
+            console.log("Error!", error)
         }
 
         fetch("http://localhost:5000/peliculas/" + id_pelicula)
-            .then(response_received)
+            .then((res) => res.json()) 
             .then(parse_pelicula)
-            .catch(request_error)
+            .catch(handle_error)
+
+        
+        function delete_response(data) {
+            if (data.success) {
+                alert("La pelicula se elimino correctamente")
+                window.location.href = "/";
+            }
+            else {
+                alert("Ocurrio un error. Intenete denuevo")
+            }
+        }
+
+        function remove_movie() {
+            const confirmation = confirm("Esta seguro que desea eliminar esta pelicula?");
+            if(!confirmation) {
+                return;
+            }
+
+            fetch("http://localhost:5000/peliculas/" + id_pelicula, { method: "DELETE" })
+            .then((res) => res.json()) 
+            .then(delete_response)
+            .catch(handle_error)
+        }
+
     </script> 
 </body>
 
