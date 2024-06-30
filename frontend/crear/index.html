@@ -24,26 +24,26 @@
                         <form onsubmit="create_movie(event)">
                             <br>
                             <div class="mb-3">
-                                <label for="title" class="form-label">Titulo</label>
-                                <input type="text" class="form-control" id="title" name="title" required>
+                                <label for="titulo" class="form-label">Titulo</label>
+                                <input type="text" class="form-control" id="titulo" name="titulo" required>
                             </div>
                             <div class="mb-3">
-                                <label for="description" class="form-label">Descripcion</label>
-                                <input type="text" class="form-control" id="description" name="description" required>
+                                <label for="descripcion" class="form-label">Descripcion</label>
+                                <input type="text" class="form-control" id="descripcion" name="descripcion" required>
                             </div>
                             <div class="mb-3">
                                 <label for="director" class="mb-3 me-3">Director</label>
                                 <input type="text" class="form-control" id="director" name="director" required>
                             </div>
                             <div class="mb-3">
-                                <label for="release_year" class="form-label">Año de lanzamiento</label>
-                                <input type="text" class="form-control" id="release_year" name="release_year"  required>
+                                <label for="ano_lanzamiento" class="form-label">Año de lanzamiento</label>
+                                <input type="text" class="form-control" id="ano_lanzamiento" name="ano_lanzamiento"  required>
                             </div>
-                            <label for="gender_id" class="mb-1">Genero</label>
-                            <select class="form-select mb-3" id="generos" name="gender_id" required></select>
+                            <label for="genero_id" class="mb-1">Genero</label>
+                            <select class="form-select mb-3" id="generos" name="genero_id" required></select>
                             <div class="mb-3">
-                                <label for="image" class="form-label">imagen</label>
-                                <input type="text" class="form-control" id="image" name="image" required>
+                                <label for="imagen" class="form-label">imagen</label>
+                                <input type="text" class="form-control" id="imagen" name="imagen" required>
                             </div>
                             <button type="submit" class="btn btn-success">Crear</button>
                         </form>
@@ -65,7 +65,7 @@
             for (let index = 0; index < content.length; index++) {
 
                 const gender = document.createElement("option");
-                gender.setAttribute("value", content[index].id_gender);
+                gender.setAttribute("value", content[index].id_genero);
                 gender.textContent = content[index].nombre;
 
                 genders.append(gender);
@@ -78,7 +78,6 @@
             .catch((error) => console.log("ERROR", error))
 
         function handle_response(data){
-            console.log(data.success)
             if (data.success) {
                 window.location.href = `/`
             }
@@ -92,12 +91,12 @@
             event.preventDefault()
             const formData = new FormData(event.target)
 
-            const title = formData.get("titulo")
-            const description = formData.get("descripcion")
-            const gender_id = formData.get("genero_id")
+            const titulo = formData.get("titulo")
+            const descripcion = formData.get("descripcion")
+            const genero_id = formData.get("genero_id")
             const director = formData.get("director")
-            const image = formData.get("imagen")
-            const release_year = formData.get("ano_lanzamiento")
+            const imagen = formData.get("imagen")
+            const ano_lanzamiento = formData.get("ano_lanzamiento")
 
             fetch("http://localhost:5000/peliculas/", {
                 method: "POST",
@@ -105,12 +104,12 @@
                         "content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    titulo: title,
-                    descripcion: description,
+                    titulo: titulo,
+                    descripcion: descripcion,
                     director: director,
-                    genero_id: gender_id,
-                    ano_lanzamiento: release_year,
-                    imagen: image,
+                    genero_id: genero_id,
+                    ano_lanzamiento: ano_lanzamiento,
+                    imagen: imagen,
                 })
             })
             .then((res) => res.json())
