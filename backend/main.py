@@ -12,7 +12,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 @app.route('/')
 def hola_mundo():
-    return 'Hola mundo'
+    return """
+            <html>
+                <body>
+                    <a href="/peliculas">My Movie API</a>
+                </body>
+            </html>
+            """
 
 
 @app.route('/peliculas/', methods=["GET"])
@@ -62,6 +68,32 @@ def agregar_pelicula():
         return jsonify({"mensaje": "No se ha podido agregar la pelicula"})
     
 
+@app.route('/peliculas/<id_pelicula>', methods=["GET"])
+def mostrar_pelicula(id_pelicula):
+
+    try:
+        pelicula_seleccionada = db.session.query(Pelicula).join(Genero
+        ).add_columns(Genero.nombre).filter(Pelicula.id == id_pelicula).first()
+        
+        pelicula = pelicula_seleccionada[0]
+        nombre_genero = pelicula_seleccionada[1]
+
+        pelicula_data = {
+            "id_pelicula": pelicula.id,
+            "titulo": pelicula.titulo,
+            "descripcion": pelicula.descripcion,
+            "genero": nombre_genero,
+            "director": pelicula.director,
+            "ano_lanzamiento": pelicula.ano_lanzamiento,
+            "imagen": pelicula.imagen
+        }  
+        
+        return jsonify(pelicula_data)
+
+    except:
+        return jsonify({"mensaje": "No se ha podido cargar la pelicula seleccionada"})
+    
+
 @app.route('/peliculas/<id_pelicula>', methods=["PUT"])
 def editar_pelicula(id_pelicula):
 
@@ -91,32 +123,6 @@ def editar_pelicula(id_pelicula):
         return jsonify({"mensaje": "No se ha podido editar la pelicula seleccionada"})
     
 
-@app.route('/peliculas/<id_pelicula>', methods=["GET"])
-def mostrar_pelicula(id_pelicula):
-
-    try:
-        pelicula_seleccionada = db.session.query(Pelicula).join(Genero
-        ).add_columns(Genero.nombre).filter(Pelicula.id == id_pelicula).first()
-        
-        pelicula = pelicula_seleccionada[0]
-        nombre_genero = pelicula_seleccionada[1]
-
-        pelicula_data = {
-            "id_pelicula": pelicula.id,
-            "titulo": pelicula.titulo,
-            "descripcion": pelicula.descripcion,
-            "genero": nombre_genero,
-            "director": pelicula.director,
-            "ano_lanzamiento": pelicula.ano_lanzamiento,
-            "imagen": pelicula.imagen
-        }  
-        
-        return jsonify(pelicula_data)
-
-    except:
-        return jsonify({"mensaje": "No se ha podido cargar la pelicula seleccionada"})
-
-
 @app.route('/peliculas/<id_pelicula>', methods=["DELETE"])
 def eliminar_pelicula(id_pelicula):
 
@@ -139,7 +145,7 @@ def eliminar_pelicula(id_pelicula):
         return jsonify({"mensaje": "No se ha podido eliminar la pelicula seleccionada"})
 
 
-@app.route('/peliculas/reparto/<id_pelicula>', methods=["GET"])
+@app.route('/peliculas/<id_pelicula>/reparto/', methods=["GET"])
 def mostrar_interpretes(id_pelicula):
 
     try:
@@ -166,7 +172,7 @@ def mostrar_interpretes(id_pelicula):
         return jsonify({"mensaje": "No se han podido cargar los interpretes "})
     
 
-@app.route('/peliculas/reparto/<id_pelicula>', methods=["POST"])
+@app.route('/peliculas/<id_pelicula>/reparto/', methods=["POST"])
 def agregar_interprete(id_pelicula):
 
     try:
@@ -212,7 +218,6 @@ def editar_interprete(id_interprete):
         interprete_editado.fecha_nacimiento = nueva_fecha_nacimiento
         interprete_editado.imagen = nueva_imagen
         interprete_editado.nombre_interpretacion = nueva_interpretacion
-
         db.session.commit()
         
         return jsonify({"success": "interprete editado exitosamente", "nombre": nuevo_nombre, "nacionalidad": nueva_nacionalidad,
@@ -256,6 +261,7 @@ def mostrar_generos():
                 "nombre": genero.nombre
             }
             generos_data.append(genero_data)
+            
         return jsonify(generos_data)
 
     except:
