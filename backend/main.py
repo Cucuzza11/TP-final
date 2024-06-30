@@ -27,6 +27,9 @@ def mostrar_peliculas():
     try:
         peliculas = Pelicula.query.all()
 
+        if(not peliculas):
+            return jsonify({"mensaje": "No hay peliculas cargadas"})
+        
         peliculas_data = []
         
         for pelicula in peliculas:
@@ -39,7 +42,8 @@ def mostrar_peliculas():
 
         return jsonify(peliculas_data)
 
-    except:
+    except Exception as error:
+        print(error)
         return jsonify({"mensaje": "No se ha podido cargar ninguna pelicula"})
     
 
