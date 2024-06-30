@@ -64,14 +64,10 @@
             }
         }
         
-        function handle_error(error) {
-            console.log("Error!", error)
-        }
-
         fetch("http://localhost:5000/peliculas/")
             .then((res) => res.json())
             .then(parse_films)
-            .catch(handle_error)
+            .catch((error) => console.log("ERROR", error))
     </script> 
 </body>
 
