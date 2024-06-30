@@ -81,7 +81,7 @@
             const interpretacion = formData.get("interpretacion")
             const imagen = formData.get("imagen") 
 
-            fetch("http://localhost:5000/peliculas/reparto/" + id_movie,  {
+            fetch("http://localhost:5000/peliculas/" + id_movie + "/reparto/",  {
                 method: "POST",
                 headers: {
                         "content-Type": "application/json"
