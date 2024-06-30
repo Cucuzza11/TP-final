@@ -90,15 +90,11 @@
                 films.append(element)
             }
         }
-        
-        function handle_error(error) {
-            console.log("Error!", error)
-        }
 
         fetch("http://localhost:5000/peliculas/" + id_movie)
             .then((res) => res.json()) 
             .then(parse_movie)
-            .catch(handle_error)
+            .catch((error) => console.log("ERROR", error))
 
         
         function delete_response(data) {
@@ -119,7 +115,7 @@
             fetch("http://localhost:5000/peliculas/" + id_movie, { method: "DELETE" })
             .then((res) => res.json()) 
             .then(delete_response)
-            .catch(handle_error)
+            .catch((error) => console.log("ERROR", error))
         }
 
     </script> 
