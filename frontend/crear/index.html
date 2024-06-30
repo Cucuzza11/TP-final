@@ -71,15 +71,11 @@
                 genders.append(genero);
             }
         }
-        
-        function handle_error(error) {
-            console.log("Error!", error)
-        }
 
         fetch("http://localhost:5000/generos/")
             .then((res) => res.json())
             .then(parse_genders)
-            .catch(handle_error)
+            .catch((error) => console.log("ERROR", error))
 
         function handle_response(data){
             console.log(data.success)
@@ -119,7 +115,7 @@
             })
             .then((res) => res.json())
             .then(handle_response)
-            .catch(handle_error)
+            .catch((error) => console.log("ERROR", error))
         }
 
     </script> 
