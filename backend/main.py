@@ -59,7 +59,7 @@ def agregar_pelicula():
         nueva_descripcion = request.json.get("descripcion")
         nuevo_genero_id = request.json.get("genero_id") 
         nuevo_director = request.json.get("director")
-        nuevo_ano_lanzamiento = request.json.get("ano_lanzamiento")
+        nuevo_ano_lanzamiento = int(request.json.get("ano_lanzamiento"))
         nueva_imagen = request.json.get("imagen")
 
         if(nuevo_ano_lanzamiento < AÑO_PRIMERA_PELICULA or nuevo_ano_lanzamiento > AÑO_ACTUAL):
@@ -122,7 +122,7 @@ def editar_pelicula(id_pelicula):
         nueva_descripcion = request.json.get("descripcion")
         nuevo_genero_id = request.json.get("genero_id") 
         nuevo_director = request.json.get("director")
-        nuevo_ano_lanzamiento = request.json.get("ano_lanzamiento")
+        nuevo_ano_lanzamiento = int(request.json.get("ano_lanzamiento"))
         nueva_imagen = request.json.get("imagen")
 
         if(nuevo_ano_lanzamiento < AÑO_PRIMERA_PELICULA or nuevo_ano_lanzamiento > AÑO_ACTUAL):
