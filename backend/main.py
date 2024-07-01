@@ -254,6 +254,9 @@ def editar_interprete(id_interprete):
         
         interprete_editado = db.session.get(Interprete, id_interprete)
         
+        if(not interprete_editado):
+            return jsonify({"mensaje": "El interprete que desea editar no existe"})
+
         interprete_editado.nombre = nuevo_nombre
         interprete_editado.nacionalidad = nueva_nacionalidad
         interprete_editado.fecha_nacimiento = nueva_fecha_nacimiento
@@ -265,8 +268,9 @@ def editar_interprete(id_interprete):
                         "fecha nacimiento": nueva_fecha_nacimiento, "ruta imagen": nueva_imagen, 
                         "interpretacion": nueva_interpretacion})
 
-    except:
-        return jsonify({"mensaje": "No se ha podido editar el interprete seleccionado "})
+    except Exception as error:
+        print(error)
+        return jsonify({"mensaje": "No se ha podido editar el interprete seleccionado"})
     
 
 @app.route('/peliculas/reparto/<id_interprete>', methods=["DELETE"])
