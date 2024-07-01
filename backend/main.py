@@ -156,19 +156,24 @@ def eliminar_pelicula(id_pelicula):
     try:
         pelicula_a_eliminar = db.session.get(Pelicula, id_pelicula)
         
+        if(not pelicula_a_eliminar):
+            return jsonify({"mensaje": "La pelicula que desea eliminar no existe"})
+
         actuaciones_a_eliminar = db.session.query(Actuacion).filter(Actuacion.pelicula_id == id_pelicula).all()
         
-        for actuacion_a_eliminar in actuaciones_a_eliminar:
-            interprete_a_eliminar = db.session.get(Interprete, actuacion_a_eliminar.interprete_id)
-            db.session.delete( actuacion_a_eliminar)
-            db.session.delete(interprete_a_eliminar)
+        if(actuaciones_a_eliminar):
+            for actuacion_a_eliminar in actuaciones_a_eliminar:
+                interprete_a_eliminar = db.session.get(Interprete, actuacion_a_eliminar.interprete_id)
+                db.session.delete( actuacion_a_eliminar)
+                db.session.delete(interprete_a_eliminar)
 
         db.session.delete(pelicula_a_eliminar)
         db.session.commit()
         
         return jsonify({"success": "pelicula eliminada exitosamente"})
 
-    except:
+    except Exception as error:
+        print(error)
         return jsonify({"mensaje": "No se ha podido eliminar la pelicula seleccionada"})
 
 
