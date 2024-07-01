@@ -21,27 +21,28 @@
                         <form onsubmit="edit_movie(event)">
                             <br>
                             <div class="mb-3">
-                                <label for="titulo" class="form-label">Titulo</label>
+                                <label for="titulo" class="form-label">Titulo:</label>
                                 <input type="text" class="form-control" id="titulo" name="titulo" required>
                             </div>
                             <div class="mb-3">
-                                <label for="descripcion" class="form-label">Descripcion</label>
+                                <label for="descripcion" class="form-label">Descripcion:</label>
                                 <input type="text" class="form-control" id="descripcion" name="descripcion" required>
                             </div>
                             <div class="mb-3">
-                                <label for="director" class="mb-3 me-3">Director</label>
+                                <label for="director" class="mb-3 me-3">Director:</label>
                                 <input type="text" class="form-control" id="director" name="director" required>
                             </div>
                             <div class="mb-3">
-                                <label for="ano_lanzamiento" class="form-label">Año de lanzamiento</label>
-                                <input type="text" class="form-control" id="ano_lanzamiento" name="ano_lanzamiento"  required>
+                                <label for="ano_lanzamiento" class="form-label">Año de lanzamiento:</label>
+                                <input type="text" class="form-control" id="ano_lanzamiento" name="ano_lanzamiento" required>
                             </div>
-                            <label for="genero_id" class="mb-1">Genero</label>
-                            <select class="form-select mb-3" id="generos" name="genero_id" required></select>
-
+                            <div class="mb-3">
+                                <label for="genero_id" class="mb-1">Genero:</label>
+                                <select class="form-select mb-3" id="generos" name="genero_id" required></select>
+                            </div>
                             </select>
                             <div class="mb-3">
-                                <label for="imagen" class="form-label">imagen</label>
+                                <label for="imagen" class="form-label">Imagen:</label>
                                 <input type="text" class="form-control" id="imagen" name="imagen" required>
                             </div>
                             <button type="submit" class="btn btn-success">Editar</button>
@@ -76,13 +77,13 @@
             .then(parse_data_peliculas)
             .catch((error) => console.log("ERROR", error))
         
-        function parse_gender(content) {
+        function parse_genders(content) {
             
             const genders = document.getElementById("generos");
             for (let index = 0; index < content.length; index++) {
 
                 const gender = document.createElement("option");
-                gender.setAttribute("value", content[index].id_gender);
+                gender.setAttribute("value", content[index].id_genero);
                 gender.textContent = content[index].nombre;
                 genders.append(gender);
             }
@@ -90,7 +91,7 @@
 
         fetch("http://localhost:5000/generos/")
             .then((response) => response.json())
-            .then(parse_gender)
+            .then(parse_genders)
             .catch((error) => console.log("ERROR", error))
 
         function handle_response(data){
