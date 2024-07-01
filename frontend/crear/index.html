@@ -24,26 +24,26 @@
                         <form onsubmit="create_movie(event)">
                             <br>
                             <div class="mb-3">
-                                <label for="titulo" class="form-label">Titulo</label>
-                                <input type="text" class="form-control" id="titulo" name="titulo" required>
+                                <label for="titulo" class="form-label">Titulo:</label>
+                                <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Ej: Scream" required>
                             </div>
                             <div class="mb-3">
-                                <label for="descripcion" class="form-label">Descripcion</label>
-                                <input type="text" class="form-control" id="descripcion" name="descripcion" required>
+                                <label for="descripcion" class="form-label">Descripcion:</label>
+                                <textarea type="text" class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Ej: Un asesino en serie, que viste una máscara blanca y una túnica negra, siembra el pánico entre los adolescentes de un pueblo californiano." required></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="director" class="mb-3 me-3">Director</label>
-                                <input type="text" class="form-control" id="director" name="director" required>
+                                <label for="director" class="mb-3 me-3">Director:</label>
+                                <input type="text" class="form-control" id="director" name="director" placeholder="Ej: Wes Craven" required>
                             </div>
                             <div class="mb-3">
-                                <label for="ano_lanzamiento" class="form-label">Año de lanzamiento</label>
-                                <input type="number" class="form-control" id="ano_lanzamiento" name="ano_lanzamiento"  required>
+                                <label for="ano_lanzamiento" class="form-label">Año de lanzamiento:</label>
+                                <input type="number" class="form-control" id="ano_lanzamiento" name="ano_lanzamiento" placeholder="Ej: 1996" required>
                             </div>
-                            <label for="genero_id" class="mb-1">Genero</label>
+                            <label for="genero_id" class="mb-1">Genero:</label>
                             <select class="form-select mb-3" id="generos" name="genero_id" required></select>
                             <div class="mb-3">
-                                <label for="imagen" class="form-label">imagen</label>
-                                <input type="text" class="form-control" id="imagen" name="imagen" required>
+                                <label for="imagen" class="form-label">Imagen:</label>
+                                <input type="text" class="form-control" id="imagen" name="imagen" placeholder="Ej: /img/scream" required>
                             </div>
                             <button type="submit" class="btn btn-success">Crear</button>
                         </form>
