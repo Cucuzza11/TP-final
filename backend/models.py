@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 class Genre(db.Model):
-    __tablename__ = 'genre'
+    __tablename__ = 'genres'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String[50], nullable=False)
     creation_date = db.Column(db.DateTime, default=datetime.datetime.now())
@@ -14,7 +14,7 @@ class Film(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String[50], nullable=False)
     description = db.Column(db.String[500], nullable=False)
-    gender_id = db.Column(db.Integer, db.ForeignKey('generos.id'))
+    gender_id = db.Column(db.Integer, db.ForeignKey('genres.id'))
     director = db.Column(db.String[50], nullable=False)
     release_year = db.Column(db.Integer, nullable=False)
     image = db.Column(db.String[500], nullable=False)
@@ -33,6 +33,6 @@ class Interpreter(db.Model):
 class Performance(db.Model):
     __tablename__ = 'performances'
     id = db.Column(db.Integer, primary_key=True)
-    film_id = db.Column(db.Integer, db.ForeignKey('peliculas.id'))
-    interpreter_id = db.Column(db.Integer, db.ForeignKey('interpretes.id'))
+    film_id = db.Column(db.Integer, db.ForeignKey('films.id'))
+    interpreter_id = db.Column(db.Integer, db.ForeignKey('interpreters.id'))
     creation_date = db.Column(db.DateTime, default=datetime.datetime.now())
