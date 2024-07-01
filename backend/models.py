@@ -3,36 +3,36 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-class Genero(db.Model):
-    __tablename__ = 'generos'
+class Genre(db.Model):
+    __tablename__ = 'genre'
     id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String[50], nullable=False)
-    fecha_creacion = db.Column(db.DateTime, default=datetime.datetime.now())
+    name = db.Column(db.String[50], nullable=False)
+    creation_date = db.Column(db.DateTime, default=datetime.datetime.now())
     
-class Pelicula(db.Model):
-    __tablename__ = 'peliculas'
+class Film(db.Model):
+    __tablename__ = 'films'
     id = db.Column(db.Integer, primary_key=True)
-    titulo = db.Column(db.String[50], nullable=False)
-    descripcion = db.Column(db.String[500], nullable=False)
-    genero_id = db.Column(db.Integer, db.ForeignKey('generos.id'))
+    title = db.Column(db.String[50], nullable=False)
+    description = db.Column(db.String[500], nullable=False)
+    gender_id = db.Column(db.Integer, db.ForeignKey('generos.id'))
     director = db.Column(db.String[50], nullable=False)
-    ano_lanzamiento = db.Column(db.Integer, nullable=False)
-    imagen = db.Column(db.String[500], nullable=False)
-    fecha_creacion = db.Column(db.DateTime, default=datetime.datetime.now())
+    release_year = db.Column(db.Integer, nullable=False)
+    image = db.Column(db.String[500], nullable=False)
+    creation_date = db.Column(db.DateTime, default=datetime.datetime.now())
 
-class Interprete(db.Model):
-    __tablename__ = 'interpretes'
+class Interpreter(db.Model):
+    __tablename__ = 'interpreters'
     id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String[50], nullable=False)
-    nacionalidad = db.Column(db.String[50])
-    fecha_nacimiento= db.Column(db.Date)
-    imagen = db.Column(db.String[500], nullable=False)
-    nombre_interpretacion = db.Column(db.String[50], nullable=False)
-    fecha_creacion = db.Column(db.DateTime, default=datetime.datetime.now())
+    name = db.Column(db.String[50], nullable=False)
+    nationality = db.Column(db.String[50])
+    birthdate = db.Column(db.Date)
+    image = db.Column(db.String[500], nullable=False)
+    interpretation_name = db.Column(db.String[50], nullable=False)
+    creation_date = db.Column(db.DateTime, default=datetime.datetime.now())
 
-class Actuacion(db.Model):
-    __tablename__ = 'actuaciones'
+class Performance(db.Model):
+    __tablename__ = 'performances'
     id = db.Column(db.Integer, primary_key=True)
-    pelicula_id = db.Column(db.Integer, db.ForeignKey('peliculas.id'))
-    interprete_id = db.Column(db.Integer, db.ForeignKey('interpretes.id'))
-    fecha_creacion = db.Column(db.DateTime, default=datetime.datetime.now())
+    film_id = db.Column(db.Integer, db.ForeignKey('peliculas.id'))
+    interpreter_id = db.Column(db.Integer, db.ForeignKey('interpretes.id'))
+    creation_date = db.Column(db.DateTime, default=datetime.datetime.now())
