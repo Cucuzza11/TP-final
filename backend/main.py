@@ -221,6 +221,10 @@ def agregar_interprete(id_pelicula):
         nuevo_interprete = Interprete(nombre=nuevo_nombre, nacionalidad=nueva_nacionalidad, 
                                 fecha_nacimiento=nueva_fecha_nacimiento, imagen=nueva_imagen, 
                                 nombre_interpretacion=nueva_interpretacion)
+
+        if(not nuevo_interprete):
+            return jsonify({"mensaje": "Los datos ingresados no son validos"})
+        
         db.session.add(nuevo_interprete)
         
         ultimo_interprete = Interprete.query.order_by(Interprete.id.desc()).first()
@@ -233,7 +237,8 @@ def agregar_interprete(id_pelicula):
                         "fecha nacimiento": nueva_fecha_nacimiento, "ruta imagen": nueva_imagen, 
                         "interpretacion": nueva_interpretacion})
 
-    except:
+    except Exception as error:
+        print(error)
         return jsonify({"mensaje": "No se ha podido agregar el interprete"})
 
 
