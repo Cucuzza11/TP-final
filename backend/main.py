@@ -279,6 +279,9 @@ def eliminar_interprete(id_interprete):
     try:
         interprete_a_eliminar = db.session.get(Interprete, id_interprete)
         
+        if(not interprete_a_eliminar):
+            return jsonify({"mensaje": "El interprete que desea eliminar no existe"})
+    
         actuacion_a_eliminar = db.session.query(Actuacion).filter(Actuacion.interprete_id == id_interprete).first()
         
         db.session.delete(actuacion_a_eliminar)
@@ -287,7 +290,8 @@ def eliminar_interprete(id_interprete):
         
         return jsonify({"success": "interprete eliminado exitosamente"})
 
-    except:
+    except Exception as error:
+        print(error)
         return jsonify({"mensaje": "No se ha podido eliminar el interprete seleccionado"})
 
 
