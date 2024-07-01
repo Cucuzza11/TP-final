@@ -326,6 +326,9 @@ def mostrar_interprete(id_interprete):
     try:
         interprete = db.session.get(Interprete, id_interprete)
         
+        if(not interprete):
+            return jsonify({"mensaje": "El interprete seleccionado no existe"})
+
         interprete_data = {
             "nombre": interprete.nombre,
             "nacionalidad": interprete.nacionalidad,
@@ -336,7 +339,8 @@ def mostrar_interprete(id_interprete):
 
         return jsonify(interprete_data)
 
-    except:
+    except Exception as error:
+        print(error)
         return jsonify({"mensaje": "No se ha podido cargar el interprete"})
 
 
