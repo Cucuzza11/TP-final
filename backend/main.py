@@ -185,6 +185,9 @@ def mostrar_interpretes(id_pelicula):
         ).filter( Interprete.id == Actuacion.interprete_id,
         Actuacion.pelicula_id == Pelicula.id, Pelicula.id == id_pelicula).all()
 
+        if(not interpretes):
+            return jsonify({"mensaje": "No hay interpretes cargados"})
+
         interpretes_data = []
 
         for interprete in interpretes:
@@ -200,7 +203,8 @@ def mostrar_interpretes(id_pelicula):
 
         return jsonify(interpretes_data)
 
-    except:
+    except Exception as error:
+        print(error)
         return jsonify({"mensaje": "No se han podido cargar los interpretes "})
     
 
