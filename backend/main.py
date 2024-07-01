@@ -3,8 +3,8 @@ from models import db, Genero, Pelicula, Interprete, Actuacion
 from flask_cors import CORS
 
 
-AÑO_PRIMERA_PELICULA = 1895
-AÑO_ACTUAL = 2024
+FIRST_FILM_YEAR = 1895
+CURRENT_YEAR = 2024
 
 
 app = Flask(__name__)
@@ -15,159 +15,159 @@ app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://alex:Alex0103@local
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 @app.route('/')
-def hola_mundo():
+def hello_world():
     return """
             <html>
                 <body>
-                    <a href="/peliculas">My Movie API</a>
+                    <a href="/films">My Films API</a>
                 </body>
             </html>
             """
 
 
-@app.route('/peliculas/', methods=["GET"])
-def mostrar_peliculas():
+@app.route('/films/', methods=["GET"])
+def show_films():
 
     try:
-        peliculas = Pelicula.query.all()
+        films = Pelicula.query.all()
 
-        if(not peliculas):
+        if(not films):
             return jsonify({"mensaje": "No hay peliculas cargadas"})
         
-        peliculas_data = []
+        films_data = []
         
-        for pelicula in peliculas:
-            pelicula_data = {
-                "id_pelicula": pelicula.id,
-                "titulo": pelicula.titulo,
-                "imagen": pelicula.imagen,
+        for film in films:
+            film_data = {
+                "id_pelicula": film.id,
+                "titulo": film.titulo,
+                "imagen": film.imagen,
             }
-            peliculas_data.append(pelicula_data)  
+            films_data.append(film_data)  
 
-        return jsonify(peliculas_data)
+        return jsonify(films_data)
 
     except Exception as error:
         print(error)
         return jsonify({"mensaje": "No se ha podido cargar ninguna pelicula"})
     
 
-@app.route('/peliculas/', methods=["POST"])
-def agregar_pelicula():
+@app.route('/films/', methods=["POST"])
+def add_film():
 
     try:
-        nuevo_titulo = request.json.get("titulo")
-        nueva_descripcion = request.json.get("descripcion")
-        nuevo_genero_id = request.json.get("genero_id") 
-        nuevo_director = request.json.get("director")
-        nuevo_ano_lanzamiento = int(request.json.get("ano_lanzamiento"))
-        nueva_imagen = request.json.get("imagen")
+        new_title = request.json.get("title")
+        new_description = request.json.get("description")
+        new_gender_id = request.json.get("gender_id") 
+        new_director = request.json.get("director")
+        new_release_year = int(request.json.get("release_year"))
+        new_image = request.json.get("image")
 
-        if(nuevo_ano_lanzamiento < AÑO_PRIMERA_PELICULA or nuevo_ano_lanzamiento > AÑO_ACTUAL):
+        if(new_release_year < FIRST_FILM_YEAR or new_release_year > CURRENT_YEAR):
             return jsonify({"mensaje": "El ano ingresado no es valido"})
 
-        nueva_pelicula = Pelicula(titulo=nuevo_titulo, descripcion=nueva_descripcion, 
-                                genero_id=nuevo_genero_id, director=nuevo_director, 
-                                ano_lanzamiento=nuevo_ano_lanzamiento, imagen=nueva_imagen)
+        new_film = Pelicula(title=new_title, description=new_description, 
+                                gender_id=new_gender_id, director=new_director, 
+                                release_year=new_release_year, image=new_image)
         
-        if(not nueva_pelicula):
+        if(not new_film):
             return({"mensaje": "Los datos ingresados no son validos"})
 
-        db.session.add(nueva_pelicula)
+        db.session.add(new_film)
         db.session.commit()
         
-        return {"success": "pelicula agregada", "titulo": nuevo_titulo, "descripcion": nueva_descripcion,
-                "id_genero": nuevo_genero_id, "director": nuevo_titulo, "ano lanzamiento": nuevo_ano_lanzamiento,
-                "ruta imagen": nueva_imagen}
+        return {"success": "pelicula agregada", "titulo": new_title, "descripcion": new_description,
+                "id_genero": new_gender_id, "director": new_director, "ano lanzamiento": new_release_year,
+                "ruta imagen": new_image}
 
     except Exception as error:
         print(error)
         return jsonify({"mensaje": "No se ha podido agregar la pelicula"})
     
 
-@app.route('/peliculas/<id_pelicula>', methods=["GET"])
-def mostrar_pelicula(id_pelicula):
+@app.route('/films/<film_id>', methods=["GET"])
+def show_film(film_id):
 
     try:
-        pelicula_seleccionada = db.session.query(Pelicula).join(Genero
-        ).add_columns(Genero.nombre).filter(Pelicula.id == id_pelicula).first()
+        selected_film = db.session.query(Pelicula).join(Genero
+        ).add_columns(Genero.nombre).filter(Pelicula.id == film_id).first()
         
-        if(not pelicula_seleccionada):
+        if(not selected_film):
             return jsonify({"mensaje": "la pelicula seleccionada no existe"})
 
-        pelicula = pelicula_seleccionada[0]
-        nombre_genero = pelicula_seleccionada[1]
+        film = selected_film[0]
+        gender_name = selected_film[1]
 
-        pelicula_data = {
-            "id_pelicula": pelicula.id,
-            "titulo": pelicula.titulo,
-            "descripcion": pelicula.descripcion,
-            "genero": nombre_genero,
-            "director": pelicula.director,
-            "ano_lanzamiento": pelicula.ano_lanzamiento,
-            "imagen": pelicula.imagen
+        film_data = {
+            "film_id": film.id,
+            "title": film.titulo,
+            "description": film.descripcion,
+            "gender": gender_name,
+            "director": film.director,
+            "release_year": film.ano_lanzamiento,
+            "image": film.imagen
         }  
         
-        return jsonify(pelicula_data)
+        return jsonify(film_data)
 
     except Exception as error:
         print(error)
         return jsonify({"mensaje": "No se ha podido cargar la pelicula seleccionada"})
     
 
-@app.route('/peliculas/<id_pelicula>', methods=["PUT"])
-def editar_pelicula(id_pelicula):
+@app.route('/films/<film_id>', methods=["PUT"])
+def edit_film(film_id):
 
     try:
-        nuevo_titulo = request.json.get("titulo")
-        nueva_descripcion = request.json.get("descripcion")
-        nuevo_genero_id = request.json.get("genero_id") 
-        nuevo_director = request.json.get("director")
-        nuevo_ano_lanzamiento = int(request.json.get("ano_lanzamiento"))
-        nueva_imagen = request.json.get("imagen")
+        new_title = request.json.get("title")
+        new_description = request.json.get("description")
+        new_gender_id = request.json.get("gender_id") 
+        new_director = request.json.get("director")
+        new_release_year = int(request.json.get("release_year"))
+        new_image = request.json.get("image")
 
-        if(nuevo_ano_lanzamiento < AÑO_PRIMERA_PELICULA or nuevo_ano_lanzamiento > AÑO_ACTUAL):
+        if(new_release_year < FIRST_FILM_YEAR or new_release_year > CURRENT_YEAR):
             return jsonify({"mensaje": "El ano ingresado no es valido"})
 
-        pelicula_editada = db.session.get(Pelicula, id_pelicula)
+        edited_film = db.session.get(Pelicula, film_id)
 
-        if(not pelicula_editada):
+        if(not edited_film):
             return jsonify({"mensaje": "La pelicula que desea editar no existe"})
 
-        pelicula_editada.titulo = nuevo_titulo    
-        pelicula_editada.descripcion = nueva_descripcion
-        pelicula_editada. genero_id = nuevo_genero_id
-        pelicula_editada.director = nuevo_director
-        pelicula_editada.ano_lanzamiento = nuevo_ano_lanzamiento
-        pelicula_editada.imagen = nueva_imagen
+        edited_film.titulo = new_title    
+        edited_film.descripcion = new_description
+        edited_film. genero_id = new_gender_id
+        edited_film.director = new_director
+        edited_film.ano_lanzamiento = new_release_year
+        edited_film.imagen = new_image
         db.session.commit()
     
-        return {"success": "pelicula editada exitosamente", "titulo": nuevo_titulo, "descripcion": nueva_descripcion,
-                "id_genero": nuevo_genero_id, "director": nuevo_titulo, "ano lanzamiento": nuevo_ano_lanzamiento,
-                "ruta imagen": nueva_imagen}
+        return {"success": "pelicula editada exitosamente", "titulo": new_title, "descripcion": new_description,
+                "id_genero": new_gender_id, "director": new_director, "ano lanzamiento": new_release_year,
+                "ruta imagen": new_image}
 
     except Exception as error:
         print(error)
         return jsonify({"mensaje": "No se ha podido editar la pelicula seleccionada"})
     
 
-@app.route('/peliculas/<id_pelicula>', methods=["DELETE"])
-def eliminar_pelicula(id_pelicula):
+@app.route('/films/<film_id>', methods=["DELETE"])
+def delete_film(film_id):
 
     try:
-        pelicula_a_eliminar = db.session.get(Pelicula, id_pelicula)
+        film_to_remove = db.session.get(Pelicula, film_id)
         
-        if(not pelicula_a_eliminar):
+        if(not film_to_remove):
             return jsonify({"mensaje": "La pelicula que desea eliminar no existe"})
 
-        actuaciones_a_eliminar = db.session.query(Actuacion).filter(Actuacion.pelicula_id == id_pelicula).all()
+        performances_to_remove = db.session.query(Actuacion).filter(Actuacion.pelicula_id == film_id).all()
         
-        if(actuaciones_a_eliminar):
-            for actuacion_a_eliminar in actuaciones_a_eliminar:
-                interprete_a_eliminar = db.session.get(Interprete, actuacion_a_eliminar.interprete_id)
-                db.session.delete( actuacion_a_eliminar)
-                db.session.delete(interprete_a_eliminar)
+        if(performances_to_remove):
+            for performance_to_remove in performances_to_remove:
+                interpreter_to_remove = db.session.get(Interprete, performance_to_remove.interprete_id)
+                db.session.delete( performance_to_remove)
+                db.session.delete(interpreter_to_remove)
 
-        db.session.delete(pelicula_a_eliminar)
+        db.session.delete(film_to_remove)
         db.session.commit()
         
         return jsonify({"success": "pelicula eliminada exitosamente"})
@@ -177,115 +177,113 @@ def eliminar_pelicula(id_pelicula):
         return jsonify({"mensaje": "No se ha podido eliminar la pelicula seleccionada"})
 
 
-@app.route('/peliculas/<id_pelicula>/reparto/', methods=["GET"])
-def mostrar_interpretes(id_pelicula):
+@app.route('/films/<film_id>/cast/', methods=["GET"])
+def show_cast(film_id):
 
     try:
-        interpretes = db.session.query(Interprete).join(Actuacion).join(Pelicula
+        interpreters = db.session.query(Interprete).join(Actuacion).join(Pelicula
         ).filter( Interprete.id == Actuacion.interprete_id,
-        Actuacion.pelicula_id == Pelicula.id, Pelicula.id == id_pelicula).all()
+        Actuacion.pelicula_id == Pelicula.id, Pelicula.id == film_id).all()
 
-        if(not interpretes):
+        if(not interpreters):
             return jsonify({"mensaje": "No hay interpretes cargados"})
 
-        interpretes_data = []
+        interpreters_data = []
 
-        for interprete in interpretes:
-            interprete_data = {
-                "id_interprete": interprete.id,
-                "nombre": interprete.nombre,
-                "nacionalidad": interprete.nacionalidad,
-                "fecha_nacimiento": interprete.fecha_nacimiento.isoformat(),
-                "imagen": interprete.imagen,
-                "interpretacion": interprete.nombre_interpretacion,
+        for interpreter in interpreters:
+            interpreter_data = {
+                "interpreter_id": interpreter.id,
+                "name": interpreter.nombre,
+                "nationality": interpreter.nacionalidad,
+                "birthdate": interpreter.fecha_nacimiento.isoformat(),
+                "image": interpreter.imagen,
+                "interpretation": interpreter.nombre_interpretacion,
             }
-            interpretes_data.append(interprete_data)  
+            interpreters_data.append(interpreter_data)  
 
-        return jsonify(interpretes_data)
+        return jsonify(interpreters_data)
 
     except Exception as error:
         print(error)
         return jsonify({"mensaje": "No se han podido cargar los interpretes "})
     
 
-@app.route('/peliculas/<id_pelicula>/reparto/', methods=["POST"])
-def agregar_interprete(id_pelicula):
+@app.route('/films/<film_id>/cast/', methods=["POST"])
+def add_interpreter(film_id):
 
     try:
-        nuevo_nombre = request.json.get("nombre")
-        nueva_nacionalidad = request.json.get("nacionalidad")
-        nueva_fecha_nacimiento = request.json.get("fecha_nacimiento") 
-        nueva_imagen = request.json.get("imagen")
-        nueva_interpretacion = request.json.get("interpretacion")
+        new_name = request.json.get("name")
+        new_nationality = request.json.get("nationality")
+        new_birthdate = request.json.get("birthdate") 
+        new_image = request.json.get("image")
+        new_interpretation = request.json.get("interpretation")
 
-        nuevo_interprete = Interprete(nombre=nuevo_nombre, nacionalidad=nueva_nacionalidad, 
-                                fecha_nacimiento=nueva_fecha_nacimiento, imagen=nueva_imagen, 
-                                nombre_interpretacion=nueva_interpretacion)
+        new_interpreter = Interprete(nombre=new_name, nacionalidad=new_nationality, 
+                                fecha_nacimiento=new_birthdate, imagen=new_image, 
+                                nombre_interpretacion=new_interpretation)
 
-        if(not nuevo_interprete):
+        if(not new_interpreter):
             return jsonify({"mensaje": "Los datos ingresados no son validos"})
         
-        db.session.add(nuevo_interprete)
+        db.session.add(new_interpreter)
         
-        ultimo_interprete = Interprete.query.order_by(Interprete.id.desc()).first()
+        last_interpreter = Interprete.query.order_by(Interprete.id.desc()).first()
 
-        nueva_actuacion = Actuacion(pelicula_id=id_pelicula, interprete_id=ultimo_interprete.id)
-        db.session.add(nueva_actuacion)
+        new_performance = Actuacion(pelicula_id=film_id, interprete_id=last_interpreter.id)
+        db.session.add(new_performance)
         db.session.commit()
 
-        return jsonify({"success": "interprete agregado exitosamente", "nombre": nuevo_nombre, "nacionalidad": nueva_nacionalidad,
-                        "fecha nacimiento": nueva_fecha_nacimiento, "ruta imagen": nueva_imagen, 
-                        "interpretacion": nueva_interpretacion})
+        return jsonify({"success": "interprete agregado exitosamente", "nombre": new_name, "nacionalidad": new_nationality,
+                        "fecha nacimiento": new_birthdate, "ruta imagen": new_image, "interpretacion": new_interpretation})
 
     except Exception as error:
         print(error)
         return jsonify({"mensaje": "No se ha podido agregar el interprete"})
 
 
-@app.route('/peliculas/reparto/<id_interprete>', methods=["PUT"])
-def editar_interprete(id_interprete):
+@app.route('/films/cast/<interpreter_id>', methods=["PUT"])
+def edit_interpreter(interpreter_id):
 
     try:
-        nuevo_nombre = request.json.get("nombre")
-        nueva_nacionalidad = request.json.get("nacionalidad")
-        nueva_fecha_nacimiento = request.json.get("fecha_nacimiento") 
-        nueva_imagen = request.json.get("imagen")
-        nueva_interpretacion = request.json.get("interpretacion")    
+        new_name = request.json.get("name")
+        new_nationality = request.json.get("nationality")
+        new_birthdate = request.json.get("birthdate") 
+        new_image = request.json.get("image")
+        new_interpretation = request.json.get("interpretation")    
         
-        interprete_editado = db.session.get(Interprete, id_interprete)
+        edited_interpreter = db.session.get(Interprete, interpreter_id)
         
-        if(not interprete_editado):
+        if(not edited_interpreter):
             return jsonify({"mensaje": "El interprete que desea editar no existe"})
 
-        interprete_editado.nombre = nuevo_nombre
-        interprete_editado.nacionalidad = nueva_nacionalidad
-        interprete_editado.fecha_nacimiento = nueva_fecha_nacimiento
-        interprete_editado.imagen = nueva_imagen
-        interprete_editado.nombre_interpretacion = nueva_interpretacion
+        edited_interpreter.nombre = new_name
+        edited_interpreter.nacionalidad = new_nationality
+        edited_interpreter.fecha_nacimiento = new_birthdate
+        edited_interpreter.imagen = new_image
+        edited_interpreter.nombre_interpretacion = new_interpretation
         db.session.commit()
         
-        return jsonify({"success": "interprete editado exitosamente", "nombre": nuevo_nombre, "nacionalidad": nueva_nacionalidad,
-                        "fecha nacimiento": nueva_fecha_nacimiento, "ruta imagen": nueva_imagen, 
-                        "interpretacion": nueva_interpretacion})
+        return jsonify({"success": "interprete editado exitosamente", "nombre": new_name, "nacionalidad": new_nationality,
+                        "fecha nacimiento": new_birthdate, "ruta imagen": new_image, "interpretacion": new_interpretation})
 
     except Exception as error:
         print(error)
         return jsonify({"mensaje": "No se ha podido editar el interprete seleccionado"})
     
 
-@app.route('/peliculas/reparto/<id_interprete>', methods=["DELETE"])
-def eliminar_interprete(id_interprete):
+@app.route('/films/cast/<interpreter_id>', methods=["DELETE"])
+def delete_interpreter(interpreter_id):
 
     try:
-        interprete_a_eliminar = db.session.get(Interprete, id_interprete)
+        interpreter_to_remove = db.session.get(Interprete, interpreter_id)
         
-        if(not interprete_a_eliminar):
+        if(not interpreter_to_remove):
             return jsonify({"mensaje": "El interprete que desea eliminar no existe"})
     
-        actuacion_a_eliminar = db.session.query(Actuacion).filter(Actuacion.interprete_id == id_interprete).first()
+        performance_to_remove = db.session.query(Actuacion).filter(Actuacion.interprete_id == interpreter_id).first()
         
-        db.session.delete(actuacion_a_eliminar)
-        db.session.delete(interprete_a_eliminar)
+        db.session.delete(performance_to_remove)
+        db.session.delete(interpreter_to_remove)
         db.session.commit()
         
         return jsonify({"success": "interprete eliminado exitosamente"})
@@ -295,49 +293,49 @@ def eliminar_interprete(id_interprete):
         return jsonify({"mensaje": "No se ha podido eliminar el interprete seleccionado"})
 
 
-@app.route('/generos/', methods=["GET"])
-def mostrar_generos():
+@app.route('/genders/', methods=["GET"])
+def show_genders():
 
     try:
-        generos = db.session.query(Genero).all()
+        genders = db.session.query(Genero).all()
         
-        if(not generos):
+        if(not genders):
             return jsonify({"mensaje": "No hay generos cargados"})
 
-        generos_data = []
+        genders_data = []
 
-        for genero in generos:
-            genero_data ={
-                "id_genero": genero.id,
-                "nombre": genero.nombre
+        for gender in genders:
+            gender_data ={
+                "gender_id": gender.id,
+                "name": gender.nombre
             }
-            generos_data.append(genero_data)
+            genders_data.append(gender_data)
             
-        return jsonify(generos_data)
+        return jsonify(genders_data)
 
     except Exception as error:
         print(error)
         return jsonify({"mensaje": "No se han podido cargar los generos"})
     
 
-@app.route('/interprete/<id_interprete>', methods=["GET"])
-def mostrar_interprete(id_interprete):
+@app.route('/interpreter/<interpreter_id>', methods=["GET"])
+def show_interpreter(interpreter_id):
 
     try:
-        interprete = db.session.get(Interprete, id_interprete)
+        interpreter = db.session.get(Interprete, interpreter_id)
         
-        if(not interprete):
+        if(not interpreter):
             return jsonify({"mensaje": "El interprete seleccionado no existe"})
 
-        interprete_data = {
-            "nombre": interprete.nombre,
-            "nacionalidad": interprete.nacionalidad,
-            "fecha_nacimiento": interprete.fecha_nacimiento.isoformat(),
-            "imagen": interprete.imagen,
-            "interpretacion": interprete.nombre_interpretacion
+        interpreter_data = {
+            "name": interpreter.nombre,
+            "nationality": interpreter.nacionalidad,
+            "birthdate": interpreter.fecha_nacimiento.isoformat(),
+            "image": interpreter.imagen,
+            "interpretation": interpreter.nombre_interpretacion
         }
 
-        return jsonify(interprete_data)
+        return jsonify(interpreter_data)
 
     except Exception as error:
         print(error)
