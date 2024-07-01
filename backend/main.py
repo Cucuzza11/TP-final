@@ -301,10 +301,12 @@ def mostrar_generos():
     try:
         generos = db.session.query(Genero).all()
         
+        if(not generos):
+            return jsonify({"mensaje": "No hay generos cargados"})
+
         generos_data = []
 
         for genero in generos:
-            
             genero_data ={
                 "id_genero": genero.id,
                 "nombre": genero.nombre
@@ -313,7 +315,8 @@ def mostrar_generos():
             
         return jsonify(generos_data)
 
-    except:
+    except Exception as error:
+        print(error)
         return jsonify({"mensaje": "No se han podido cargar los generos"})
     
 
