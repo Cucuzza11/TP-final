@@ -21,29 +21,29 @@
                         <form onsubmit="edit_movie(event)">
                             <br>
                             <div class="mb-3">
-                                <label for="titulo" class="form-label">Titulo:</label>
-                                <input type="text" class="form-control" id="titulo" name="titulo"  required>
+                                <label for="title" class="form-label">Titulo:</label>
+                                <input type="text" class="form-control" id="title" name="title"  required>
                             </div>
                             <div class="mb-3">
-                                <label for="descripcion" class="form-label">Descripcion:</label>
-                                <textarea type="text" class="form-control" id="descripcion" name="descripcion" required></textarea>
+                                <label for="description" class="form-label">Descripcion:</label>
+                                <textarea type="text" class="form-control" id="description" name="description" required></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="director" class="form-label">Director:</label>
                                 <input type="text" class="form-control" id="director" name="director"  required>
                             </div>
                             <div class="mb-3">
-                                <label for="ano_lanzamiento" class="form-label">Año de lanzamiento:</label>
-                                <input type="text" class="form-control" id="ano_lanzamiento" name="ano_lanzamiento" required>
+                                <label for="release_year" class="form-label">Año de lanzamiento:</label>
+                                <input type="text" class="form-control" id="release_year" name="release_year" required>
                             </div>
                             <div class="mb-3">
-                                <label for="genero_id" class="mb-1">Genero:</label>
-                                <select class="form-select mb-3" id="generos" name="genero_id" required></select>
+                                <label for="genre_id" class="mb-1">Genero:</label>
+                                <select class="form-select mb-3" id="genres" name="genre_id" required></select>
                             </div>
                             </select>
                             <div class="mb-3">
-                                <label for="imagen" class="form-label">Imagen:</label>
-                                <input type="text" class="form-control" id="imagen" name="imagen" required>
+                                <label for="image" class="form-label">Imagen:</label>
+                                <input type="text" class="form-control" id="image" name="image" required>
                             </div>
                             <button type="submit" class="btn btn-success">Editar</button>
                         </form>
@@ -60,45 +60,46 @@
 
         
         const params = new URLSearchParams(window.location.search);
-        const id_movie = params.get("id_pelicula");
+        const film_id = params.get("id_pelicula");
 
-        function parse_data_peliculas(data) {
+        function parse_data_films(data) {
 
-            document.getElementById("titulo").value = data.titulo
-            document.getElementById("descripcion").value = data.descripcion
+            document.getElementById("title").value = data.title
+            document.getElementById("description").value = data.description
             document.getElementById("director").value = data.director
-            document.getElementById("ano_lanzamiento").value = data.ano_lanzamiento
-            document.getElementById("imagen").value = data.imagen
-            //document.getElementById("genero_id").value = data.genero_id
+            document.getElementById("release_year").value = data.release_year
+            document.getElementById("image").value = data.image
+            //hacerlo con el id del genero
+            document.getElementById("genre").value = data.genre
         }
 
-        fetch("http://localhost:5000/peliculas/" + id_movie)
+        fetch("http://localhost:5000/films/" + film_id)
             .then((response) => response.json())
-            .then(parse_data_peliculas)
+            .then(parse_data_films)
             .catch((error) => console.log("ERROR", error))
         
-        function parse_genders(content) {
+        function parse_genres(content) {
             
-            const genders = document.getElementById("generos");
+            const genres = document.getElementById("genres");
             for (let index = 0; index < content.length; index++) {
 
-                const gender = document.createElement("option");
-                gender.setAttribute("value", content[index].id_genero);
-                gender.textContent = content[index].nombre;
-                genders.append(gender);
+                const genre = document.createElement("option");
+                genre.setAttribute("value", content[index].genre_id);
+                genre.textContent = content[index].name;
+                genres.append(genre);
             }
         }
 
-        fetch("http://localhost:5000/generos/")
-            .then((response) => response.json())
-            .then(parse_genders)
+        fetch("http://localhost:5000/genres/")
+            .then((res) => res.json())
+            .then(parse_genres)
             .catch((error) => console.log("ERROR", error))
 
         function handle_response(data){
             if (data.success) {
                 window.location.href = "/"
             }
-            else{
+            else {
                 alert("ERROR")
             }
         }
@@ -107,25 +108,25 @@
             event.preventDefault()
 
             const formData = new FormData(event.target)
-            const titulo = formData.get("titulo")
-            const descripcion = formData.get("descripcion")
-            const genero_id = formData.get("genero_id")
+            const title = formData.get("title")
+            const description = formData.get("description")
+            const genre_id = formData.get("genre_id")
             const director = formData.get("director")
-            const imagen = formData.get("imagen")
-            const ano_lanzamiento = formData.get("ano_lanzamiento")
+            const image = formData.get("image")
+            const release_year = formData.get("release_year")
 
-            fetch("http://localhost:5000/peliculas/" + id_movie, {
+            fetch("http://localhost:5000/films/" + film_id, {
                 method: "PUT",
                 headers: {
                     "content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    titulo: titulo,
-                    descripcion: descripcion,
+                    title: title,
+                    description: description,
                     director: director,
-                    genero_id: genero_id,
-                    ano_lanzamiento: ano_lanzamiento,
-                    imagen: imagen,
+                    genre_id: genre_id,
+                    release_year: release_year,
+                    image: image,
                 })
             })
             .then((res) => res.json())
