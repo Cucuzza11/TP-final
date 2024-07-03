@@ -60,12 +60,12 @@
         const film_id = params.get("id_pelicula");
 
         function handle_response(data){
-            console.log(data)
+
             if (data.success) {
                 window.location.href = `/peliculas/reparto?id_pelicula=${film_id}`
             }
             else {
-                alert("ERROR")
+                alert(data.message)
             }
         }
 
