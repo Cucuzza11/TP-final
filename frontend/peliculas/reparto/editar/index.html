@@ -21,24 +21,24 @@
                         <form onsubmit="edit_cast(event)">
                             <br>
                             <div class="mb-3">
-                                <label for="nombre" class="form-label">Nombre:</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                <label for="name" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
                             </div>
                             <div class="mb-3">
-                                <label for="nacionalidad" class="form-label">Nacionalidad:</label>
-                                <input type="text" class="form-control" id="nacionalidad" name="nacionalidad" required>
+                                <label for="nationality" class="form-label">Nacionalidad:</label>
+                                <input type="text" class="form-control" id="nationality" name="nationality" required>
                             </div>
                             <div class="mb-3">
-                                <label for="interpretacion" class="mb-3 me-3">Nombre del personaje:</label>
-                                <input type="text" class="form-control" id="interpretacion" name="interpretacion" required>
+                                <label for="interpretation" class="mb-3 me-3">Nombre del personaje:</label>
+                                <input type="text" class="form-control" id="interpretation" name="interpretation" required>
                             </div>
                             <div class="mb-3">
-                                <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento:</label>
-                                <input type="text" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                                <label for="birthdate" class="form-label">Fecha de nacimiento:</label>
+                                <input type="text" class="form-control" id="birthdate" name="birthdate" required>
                             </div>
                             <div class="mb-3">
-                                <label for="imagen" class="form-label">Imagen:</label>
-                                <input type="text" class="form-control" id="imagen" name="imagen" required>
+                                <label for="image" class="form-label">Imagen:</label>
+                                <input type="text" class="form-control" id="image" name="image" required>
                             </div>
                             <button type="submit" class="btn btn-success">Editar</button>
                         </form>
@@ -54,19 +54,19 @@
     <script>
         
         const params = new URLSearchParams(window.location.search);
-        const id_interpreter = params.get("id_interprete");
-        const id_movie = params.get("id_pelicula");
+        const interpreter_id = params.get("id_interprete");
+        const film_id = params.get("id_pelicula");
 
         function parse_data_cast(data) {
 
-            document.getElementById("nombre").value = data.nombre
-            document.getElementById("nacionalidad").value = data.nacionalidad
-            document.getElementById("interpretacion").value = data.interpretacion
-            document.getElementById("fecha_nacimiento").value = data.fecha_nacimiento
-            document.getElementById("imagen").value = data.imagen
+            document.getElementById("name").value = data.name
+            document.getElementById("nationality").value = data.nationality
+            document.getElementById("interpretation").value = data.interpretation
+            document.getElementById("birthdate").value = data.birthdate
+            document.getElementById("image").value = data.image
         }
 
-        fetch("http://localhost:5000/interprete/" + id_interpreter)
+        fetch("http://localhost:5000/interpreter/" + interpreter_id)
             .then((res) => res.json())
             .then(parse_data_cast)
             .catch((error) => console.log("ERROR", error))
@@ -74,9 +74,9 @@
         function handle_response(data){
             console.log(data.success)
             if (data.success) {
-                window.location.href = "/peliculas/reparto?id_pelicula=" + id_movie
+                window.location.href = "/peliculas/reparto?id_pelicula=" + film_id
             }
-            else{
+            else {
                 alert("ERROR")
             }
         }
@@ -85,23 +85,23 @@
             event.preventDefault()
             const formData = new FormData(event.target)
 
-            const nombre = formData.get("nombre")
-            const nacionalidad = formData.get("nacionalidad")
-            const interpretacion = formData.get("interpretacion")
-            const imagen = formData.get("imagen")
-            const fecha_nacimiento = formData.get("fecha_nacimiento")
+            const name = formData.get("name")
+            const nationality = formData.get("nationality")
+            const interpretation = formData.get("interpretation")
+            const image = formData.get("image")
+            const birthdate = formData.get("birthdate")
 
-            fetch("http://localhost:5000/peliculas/reparto/" + id_interpreter, {
+            fetch("http://localhost:5000/films/cast/" + interpreter_id, {
                 method: "PUT",
                 headers: {
                     "content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    nombre: nombre,
-                    nacionalidad: nacionalidad,
-                    interpretacion: interpretacion,
-                    fecha_nacimiento: fecha_nacimiento,
-                    imagen: imagen,
+                    name: name,
+                    nationality: nationality,
+                    interpretation: interpretation,
+                    birthdate: birthdate,
+                    image: image,
                 })
             })
             .then((res) => res.json())
