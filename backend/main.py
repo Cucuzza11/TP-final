@@ -32,7 +32,7 @@ def show_films():
         films = Film.query.all()
 
         if(not films):
-            return jsonify({"mensaje": "No hay peliculas cargadas"})
+            return jsonify({"message": "No hay peliculas cargadas"})
         
         films_data = []
         
@@ -48,7 +48,7 @@ def show_films():
 
     except Exception as error:
         print(error)
-        return jsonify({"mensaje": "No se ha podido cargar ninguna pelicula"})
+        return jsonify({"message": "No se han podido cargar las peliculas debido a un error"})
     
 
 @app.route('/films/', methods=["POST"])
@@ -62,26 +62,27 @@ def add_film():
         new_release_year = int(request.json.get("release_year"))
         new_image = request.json.get("image")
 
+        if(not new_title or not new_description or not new_genre_id or not new_director
+            or not new_release_year or not new_image):
+            return({"message": "Datos incompletos"})
+
         if(new_release_year < FIRST_FILM_YEAR or new_release_year > CURRENT_YEAR):
-            return jsonify({"mensaje": "El ano ingresado no es valido"})
+            return jsonify({"message": "El ano ingresado no es valido"})
 
         new_film = Film(title=new_title, description=new_description, 
                                 genre_id=new_genre_id, director=new_director, 
                                 release_year=new_release_year, image=new_image)
         
-        if(not new_film):
-            return({"mensaje": "Los datos ingresados no son validos"})
-
         db.session.add(new_film)
         db.session.commit()
         
-        return {"success": "pelicula agregada", "titulo": new_title, "descripcion": new_description,
+        return jsonify({"success": "pelicula agregada", "titulo": new_title, "descripcion": new_description,
                 "id_genero": new_genre_id, "director": new_director, "ano lanzamiento": new_release_year,
-                "ruta imagen": new_image}
+                "ruta imagen": new_image})
 
     except Exception as error:
         print(error)
-        return jsonify({"mensaje": "No se ha podido agregar la pelicula"})
+        return jsonify({"message": "No se ha podido agregar la pelicula debido a un error"})
     
 
 @app.route('/films/<film_id>', methods=["GET"])
