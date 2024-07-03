@@ -37,7 +37,7 @@
                                 <input type="text" class="form-control" id="release_year" name="release_year" required>
                             </div>
                             <div class="mb-3">
-                                <label for="genre_id" class="mb-1">Genero:</label>
+                                <label for="genres" class="mb-1">Genero:</label>
                                 <select class="form-select mb-3" id="genres" name="genre_id" required></select>
                             </div>
                             </select>
@@ -57,27 +57,10 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script>
-
         
         const params = new URLSearchParams(window.location.search);
         const film_id = params.get("id_pelicula");
 
-        function parse_data_films(data) {
-
-            document.getElementById("title").value = data.title
-            document.getElementById("description").value = data.description
-            document.getElementById("director").value = data.director
-            document.getElementById("release_year").value = data.release_year
-            document.getElementById("image").value = data.image
-            //hacerlo con el id del genero
-            document.getElementById("genre").value = data.genre
-        }
-
-        fetch("http://localhost:5000/films/" + film_id)
-            .then((response) => response.json())
-            .then(parse_data_films)
-            .catch((error) => console.log("ERROR", error))
-        
         function parse_genres(content) {
             
             const genres = document.getElementById("genres");
@@ -94,6 +77,22 @@
             .then((res) => res.json())
             .then(parse_genres)
             .catch((error) => console.log("ERROR", error))
+
+        function parse_data_films(data) {
+
+            document.getElementById("title").value = data.title
+            document.getElementById("description").value = data.description
+            document.getElementById("director").value = data.director
+            document.getElementById("release_year").value = data.release_year
+            document.getElementById("image").value = data.image
+            document.getElementById("genres").value = data.genre_id
+        }
+
+        fetch("http://localhost:5000/films/" + film_id)
+            .then((response) => response.json())
+            .then(parse_data_films)
+            .catch((error) => console.log("ERROR", error))
+        
 
         function handle_response(data){
             if (data.success) {
