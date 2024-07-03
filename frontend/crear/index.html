@@ -39,8 +39,8 @@
                                 <label for="release_year" class="form-label">Año de lanzamiento:</label>
                                 <input type="number" class="form-control" id="release_year" name="release_year" placeholder="Ej: 1996" required>
                             </div>
-                            <label for="genres" class="mb-1">Genero:</label>
-                            <select class="form-select mb-3" id="genres" name="genres" required></select>
+                            <label for="genre_id" class="mb-1">Genero:</label>
+                            <select class="form-select mb-3" id="genres" name="genre_id" required></select>
                             <div class="mb-3">
                                 <label for="image" class="form-label">Imagen:</label>
                                 <input type="text" class="form-control" id="image" name="image" placeholder="Ej: /img/scream" required>
@@ -77,6 +77,7 @@
             .catch((error) => console.log("ERROR", error))
 
         function handle_response(data){
+
             if (data.success) {
                 window.location.href = `/`
             }
