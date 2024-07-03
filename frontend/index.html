@@ -26,6 +26,10 @@
     <script>
 
         function parse_films(content) {
+
+            if(content.message) {
+                alert(content.message)
+            }
             
             const film = document.getElementById("films");
             for (let index = 0; index < content.length; index++) {
