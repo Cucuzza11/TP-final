@@ -57,13 +57,18 @@
         const interpreter_id = params.get("id_interprete");
         const film_id = params.get("id_pelicula");
 
-        function parse_data_cast(data) {
+        function parse_data_cast(content) {
 
-            document.getElementById("name").value = data.name
-            document.getElementById("nationality").value = data.nationality
-            document.getElementById("interpretation").value = data.interpretation
-            document.getElementById("birthdate").value = data.birthdate
-            document.getElementById("image").value = data.image
+            if(content.message) {
+                alert(content.message)
+                window.location.href = "/peliculas/reparto?id_pelicula=" + film_id
+            }
+
+            document.getElementById("name").value = content.interpreter.name
+            document.getElementById("nationality").value = content.interpreter.nationality
+            document.getElementById("interpretation").value = content.interpreter.interpretation
+            document.getElementById("birthdate").value = content.interpreter.birthdate
+            document.getElementById("image").value = content.interpreter.image
         }
 
         fetch("http://localhost:5000/interpreter/" + interpreter_id)
@@ -77,7 +82,7 @@
                 window.location.href = "/peliculas/reparto?id_pelicula=" + film_id
             }
             else {
-                alert("ERROR")
+                alert(content.message)
             }
         }
 
