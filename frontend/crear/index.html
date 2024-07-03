@@ -60,6 +60,11 @@
     <script>
         
         function parse_genres(content) {
+
+            if(content.message) {
+                alert(content.message)
+                window.location.href = "/"
+            }
             
             const genres = document.getElementById("genres");
             for (let index = 0; index < content.length; index++) {
