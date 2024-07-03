@@ -28,14 +28,14 @@
     <script>
 
         const params = new URLSearchParams(window.location.search);
-        const id_movie = params.get("id_pelicula");
+        const film_id = params.get("id_pelicula");
 
         const add_button = document.getElementById("add_button");    
         const add = document.createElement("a");
         add.setAttribute("class", "btn btn-success");
         add.setAttribute("id", "boton-agregar");
-        add.setAttribute("href", "/peliculas/crear?id_pelicula=" + id_movie);
-        add.textContent = "Agregar";
+        add.setAttribute("href", "/peliculas/crear?id_pelicula=" + film_id);
+        add.textContent = "AGREGAR";
         add_button.append(add);
         
         function parse_cast(content) {
@@ -58,7 +58,7 @@
             
                 const image = document.createElement("img");
                 image.setAttribute("class", "img-fluid rounded-start");
-                image.setAttribute("src", content[index].imagen)
+                image.setAttribute("src", content[index].image)
 
                 const div4 = document.createElement("div");
                 div4.setAttribute("class", "col-md-8");
@@ -68,33 +68,33 @@
                 
                 const name = document.createElement("label");
                 name.setAttribute("class", "display-4");
-                name.textContent = content[index].nombre;
+                name.textContent = content[index].name;
 
                 const interpretation = document.createElement("h3");
                 interpretation.setAttribute("class", "text-body-secondary");
-                interpretation.textContent = "Personaje: " + content[index].interpretacion;
+                interpretation.textContent = "Personaje: " + content[index].interpretation;
 
                 const nationality = document.createElement("h3");
                 nationality.setAttribute("class", "text-body-secondary");
-                nationality.textContent = "Nacionaliad: " + content[index].nacionalidad;
+                nationality.textContent = "Nacionaliad: " + content[index].nationality;
 
                 const birthdate = document.createElement("h3");
                 birthdate.setAttribute("class", "text-body-secondary");
-                birthdate.textContent = "Fecha de nacimiento: " + content[index].fecha_nacimiento;
+                birthdate.textContent = "Fecha de nacimiento: " + content[index].birthdate;
 
                 const footer = document.createElement("div");
                 footer.setAttribute("class", "card-footer"); 
 
                 const remove_button = document.createElement("button");
                 remove_button.setAttribute("class", "btn btn-danger");
-                remove_button.setAttribute("onclick", `remove_cast(${content[index].id_interprete})`);
+                remove_button.setAttribute("onclick", `remove_cast(${content[index].interpreter_id})`);
                 remove_button.textContent = "Eliminar";
 
                 const edit_button = document.createElement("a");
                 edit_button.setAttribute("class", "btn btn-secondary");
+                edit_button.setAttribute("href", `/peliculas/reparto/editar?id_pelicula=${film_id}&id_interprete=${content[index].interpreter_id}`);
                 edit_button.textContent = "Editar";
-                edit_button.setAttribute("href", `/peliculas/reparto/editar?id_pelicula=${id_movie}&id_interprete=${content[index].id_interprete}`);
-                
+
                 name.style.marginBottom = "40px";
                 interpretation.style.marginBottom = "20px";
                 nationality.style.marginBottom = "20px";
@@ -117,27 +117,27 @@
             }
         }
         
-        fetch("http://localhost:5000/peliculas/" + id_movie + "/reparto/")
+        fetch("http://localhost:5000/films/" + film_id + "/cast/")
             .then((res) => res.json())
             .then(parse_cast)
             .catch((error) => console.log("ERROR", error))
 
         function delete_response(data) {
             if (data.success) {
-                window.location.href = "/peliculas/reparto?id_pelicula=" + id_movie;
+                window.location.href = "/peliculas/reparto?id_pelicula=" + film_id;
             }
             else {
                 alert("Ocurrio un error. Intenete denuevo")
             }
         }
 
-        function remove_cast(id_interpreter) {
+        function remove_cast(interpreter_id) {
             const confirmation = confirm("Esta seguro que desea eliminar este interprete?");
-            if(!confirmation) {
+            if (!confirmation) {
                 return;
             }
 
-            fetch("http://localhost:5000/peliculas/reparto/" + id_interpreter , { method: "DELETE" })
+            fetch("http://localhost:5000/films/cast/" + interpreter_id , { method: "DELETE" })
             .then((res) => res.json()) 
             .then(delete_response)
             .catch((error) => console.log("ERROR", error))
