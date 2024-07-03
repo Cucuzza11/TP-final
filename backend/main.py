@@ -261,7 +261,7 @@ def add_interpreter(film_id):
 
     except Exception as error:
         print(error)
-        return jsonify({"message": "No se ha podido agregar el interprete"})
+        return jsonify({"message": "No se ha podido agregar el interprete debido a un error"})
 
 
 @app.route('/films/cast/<interpreter_id>', methods=["PUT"])
@@ -274,11 +274,14 @@ def edit_interpreter(interpreter_id):
         new_image = request.json.get("image")
         new_interpretation = request.json.get("interpretation")    
         
+        if(not new_name or not new_image or not new_interpretation):
+            return jsonify({"message": "Datos incompletos"})
+
+        if(not valid_date(new_birthdate)):
+            return jsonify({"message": "La fecha ingresada es incorrecta"})
+
         edited_interpreter = db.session.get(Interpreter, interpreter_id)
         
-        if(not edited_interpreter):
-            return jsonify({"mensaje": "El interprete que desea editar no existe"})
-
         edited_interpreter.name = new_name
         edited_interpreter.nationality = new_nationality
         edited_interpreter.birthdate = new_birthdate
@@ -291,7 +294,7 @@ def edit_interpreter(interpreter_id):
 
     except Exception as error:
         print(error)
-        return jsonify({"mensaje": "No se ha podido editar el interprete seleccionado"})
+        return jsonify({"message": "No se ha podido editar el interprete seleccionado debido a un error"})
     
 
 @app.route('/films/cast/<interpreter_id>', methods=["DELETE"])
@@ -348,7 +351,7 @@ def show_interpreter(interpreter_id):
         interpreter = db.session.get(Interpreter, interpreter_id)
         
         if(not interpreter):
-            return jsonify({"mensaje": "El interprete seleccionado no existe"})
+            return jsonify({"message": "El interprete seleccionado no existe"})
 
         interpreter_data = {
             "name": interpreter.name,
@@ -358,11 +361,11 @@ def show_interpreter(interpreter_id):
             "interpretation": interpreter.interpretation_name
         }
 
-        return jsonify(interpreter_data)
+        return jsonify({"interpreter": interpreter_data})
 
     except Exception as error:
         print(error)
-        return jsonify({"mensaje": "No se ha podido cargar el interprete"})
+        return jsonify({"message": "No se ha podido cargar el interprete debido a un error"})
 
 
 if __name__ == '__main__':
