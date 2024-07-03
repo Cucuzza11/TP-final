@@ -14,7 +14,7 @@ class Film(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String[50], nullable=False)
     description = db.Column(db.String[500], nullable=False)
-    gender_id = db.Column(db.Integer, db.ForeignKey('genres.id'))
+    genre_id = db.Column(db.Integer, db.ForeignKey('genres.id'))
     director = db.Column(db.String[50], nullable=False)
     release_year = db.Column(db.Integer, nullable=False)
     image = db.Column(db.String[500], nullable=False)
