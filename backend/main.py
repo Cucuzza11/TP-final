@@ -189,6 +189,11 @@ def delete_film(film_id):
 def show_cast(film_id):
 
     try:
+        film = db.session.get(Film, film_id)
+
+        if(not film):
+            return jsonify({"message": "La pelicula de la cual desea ver sus interpretes no existe"})
+
         interpreters = db.session.query(Interpreter).join(Performance).join(Film
             ).filter( Interpreter.id == Performance.interpreter_id,
             Performance.film_id == Film.id, Film.id == film_id).all()
@@ -231,7 +236,7 @@ def add_interpreter(film_id):
         film = db.session.get(Film, film_id)
 
         if(not film):
-            return jsonify({"message": "La pelicula a la que desea agregar un interprete es inexistente"})
+            return jsonify({"message": "La pelicula a la que desea agregar un interprete no existe"})
 
         new_name = request.json.get("name")
         new_nationality = request.json.get("nationality")
@@ -264,10 +269,15 @@ def add_interpreter(film_id):
         return jsonify({"message": "No se ha podido agregar el interprete debido a un error"})
 
 
-@app.route('/films/cast/<interpreter_id>', methods=["PUT"])
-def edit_interpreter(interpreter_id):
+@app.route('/films/<film_id>/cast/<interpreter_id>', methods=["PUT"])
+def edit_interpreter(film_id, interpreter_id):
 
     try:
+        film = db.session.get(Film, film_id)
+
+        if(not film):
+            return jsonify({"message": "La pelicula del interprete que desea editar no existe"})
+
         new_name = request.json.get("name")
         new_nationality = request.json.get("nationality")
         new_birthdate = request.json.get("birthdate") 
