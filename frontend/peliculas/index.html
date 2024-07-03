@@ -63,27 +63,31 @@
         
         function parse_film(content) {
 
+            if(content.message) {
+                alert(content.message)
+                window.location.href = "/"
+            }
             const film = document.getElementById("films")
             
             const title = document.getElementById("title");
-            title.innerText = content.title;
+            title.innerText = content.film.title;
 
             const description = document.getElementById("description");
-            description.innerText = content.description;
+            description.innerText = content.film.description;
 
             const genre = document.getElementById("genre");
-            genre.innerText = content.genre_name;
+            genre.innerText = content.film.genre_name;
 
             const director = document.getElementById("director");
-            director.innerText = content.director;
+            director.innerText = content.film.director;
 
             const release_year = document.getElementById("release_year");
-            release_year.innerText = content.release_year;
+            release_year.innerText = content.film.release_year;
 
             const image = document.getElementById("image");
-            image.setAttribute("src", content.image);
+            image.setAttribute("src", content.film.image);
 
-            const name_list = content.names.split(",") 
+            const name_list = content.film.names.split(",") 
             for (let index = 0; index < name_list.length; index++) {
                 const element = document.createElement("li")
                 element.innerText = name_list[index]
@@ -102,7 +106,7 @@
                 window.location.href = "/";
             }
             else {
-                alert("Ocurrio un error. Intenete denuevo")
+                alert(data.message)
             }
         }
 
