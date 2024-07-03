@@ -88,30 +88,31 @@ def add_film():
 def show_film(film_id):
 
     try:
-        selected_film = db.session.query(Film).join(Genre
-        ).add_columns(Genre.name).filter(Film.id == film_id).first()
+        selected_film = db.session.query(Film, Genre).filter(
+            Film.id == film_id, Film.genre_id == Genre.id).first()
         
         if(not selected_film):
-            return jsonify({"mensaje": "la pelicula seleccionada no existe"})
+            return jsonify({"message": "la pelicula seleccionada no existe"})
 
         film = selected_film[0]
-        genre_name = selected_film[1]
+        genre = selected_film[1]
 
         film_data = {
             "film_id": film.id,
             "title": film.title,
             "description": film.description,
-            "genre": genre_name,
+            "genre_id": genre.id,
+            "genre_name": genre.name,
             "director": film.director,
             "release_year": film.release_year,
             "image": film.image
         }  
         
-        return jsonify(film_data)
+        return jsonify({"film": film_data})
 
     except Exception as error:
         print(error)
-        return jsonify({"mensaje": "No se ha podido cargar la pelicula seleccionada"})
+        return jsonify({"message": "No se ha podido cargar la pelicula debido a un error"})
     
 
 @app.route('/films/<film_id>', methods=["PUT"])
@@ -126,12 +127,12 @@ def edit_film(film_id):
         new_image = request.json.get("image")
 
         if(new_release_year < FIRST_FILM_YEAR or new_release_year > CURRENT_YEAR):
-            return jsonify({"mensaje": "El ano ingresado no es valido"})
+            return jsonify({"message": "El ano ingresado no es valido"})
 
         edited_film = db.session.get(Film, film_id)
 
         if(not edited_film):
-            return jsonify({"mensaje": "La pelicula que desea editar no existe"})
+            return jsonify({"message": "La pelicula que desea editar no existe"})
 
         edited_film.title = new_title    
         edited_film.descripcion = new_description
@@ -141,13 +142,13 @@ def edit_film(film_id):
         edited_film.image = new_image
         db.session.commit()
     
-        return {"success": "pelicula editada exitosamente", "titulo": new_title, "descripcion": new_description,
-                "id_genero": new_genre_id, "director": new_director, "ano lanzamiento": new_release_year,
-                "ruta imagen": new_image}
+        return jsonify({"success": "pelicula editada exitosamente", "titulo": new_title, "descripcion": new_description,
+                "id genero": new_genre_id, "director": new_director, "ano lanzamiento": new_release_year,
+                "ruta imagen": new_image})
 
     except Exception as error:
         print(error)
-        return jsonify({"mensaje": "No se ha podido editar la pelicula seleccionada"})
+        return jsonify({"message": "No se ha podido editar la pelicula debido a un error"})
     
 
 @app.route('/films/<film_id>', methods=["DELETE"])
@@ -157,7 +158,7 @@ def delete_film(film_id):
         film_to_remove = db.session.get(Film, film_id)
         
         if(not film_to_remove):
-            return jsonify({"mensaje": "La pelicula que desea eliminar no existe"})
+            return jsonify({"message": "La pelicula que desea eliminar no existe"})
 
         performances_to_remove = db.session.query(Performance).filter(Performance.film_id == film_id).all()
         
@@ -170,11 +171,11 @@ def delete_film(film_id):
         db.session.delete(film_to_remove)
         db.session.commit()
         
-        return jsonify({"success": "pelicula eliminada exitosamente"})
+        return jsonify({"success": "pelicula eliminada exitosamente", "id pelicula": film_id})
 
     except Exception as error:
         print(error)
-        return jsonify({"mensaje": "No se ha podido eliminar la pelicula seleccionada"})
+        return jsonify({"message": "No se ha podido eliminar la pelicula debido a un error"})
 
 
 @app.route('/films/<film_id>/cast/', methods=["GET"])
