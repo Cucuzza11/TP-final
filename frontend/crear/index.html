@@ -82,12 +82,11 @@
                 window.location.href = `/`
             }
             else {
-                alert("ERROR")
+                alert(data.message)
             }
         }
 
         function create_movie(event) {
-
             event.preventDefault()
             const formData = new FormData(event.target)
 
