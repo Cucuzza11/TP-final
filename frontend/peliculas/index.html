@@ -19,23 +19,23 @@
             <div class="card mb-3" style="max-width: 1320px;">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="" alt="" id="imagen" class="w-100">
+                        <img src="" alt="" id="image" class="w-100">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h1 class="display-1" id="titulo"></h1>
-                            <em><h3 id="genero" class="display-6"></h3></em>
+                            <h1 class="display-1" id="title"></h1>
+                            <em><h3 id="genre" class="display-6"></h3></em>
                             <br>
                             <div class="horizontal"> 
-                                <label for="ano_lanzamiento" class="text-body-secondary">Año:</label>
-                                <h3 for="ano_lanzamiento" class="lead"> <small class="text-body-secondary" id="ano_lanzamiento"></small></h3>
+                                <label for="release_year" class="text-body-secondary">Año:</label>
+                                <h3 for="release_year" class="lead"> <small class="text-body-secondary" id="release_year"></small></h3>
                             </div>      
                             <div class="horizontal">
                                 <label for="director" class="text-body-secondary">Director:</label>
                                 <h3 for="director" class="lead"> <small class="text-body-secondary" id="director" ></small></h3>
                             </div>
                             <br>
-                            <h3 id="descripcion" class="display-6"></h3>
+                            <h3 id="description" class="display-6"></h3>
                             <ul id="films"></ul>
                             <a id ="buttonCast" class="btn btn-primary">Ver Reparto</a>
                         </div>
@@ -56,44 +56,44 @@
     <script>
 
         const params = new URLSearchParams(window.location.search);
-        const id_movie = params.get("id_pelicula");
+        const film_id = params.get("id_pelicula");
         
-        document.getElementById("buttonEdit").setAttribute("href", "/peliculas/editar?id_pelicula=" + id_movie)
-        document.getElementById("buttonCast").setAttribute("href", "/peliculas/reparto?id_pelicula=" + id_movie)
+        document.getElementById("buttonEdit").setAttribute("href", "/peliculas/editar?id_pelicula=" + film_id)
+        document.getElementById("buttonCast").setAttribute("href", "/peliculas/reparto?id_pelicula=" + film_id)
         
-        function parse_movie(content) {
+        function parse_film(content) {
 
-            const films = document.getElementById("films")
+            const film = document.getElementById("films")
             
-            const title = document.getElementById("titulo");
-            title.innerText = content.titulo;
+            const title = document.getElementById("title");
+            title.innerText = content.title;
 
-            const gender = document.getElementById("genero");
-            gender.innerText = content.genero;
+            const description = document.getElementById("description");
+            description.innerText = content.description;
 
-            const image = document.getElementById("imagen");
-            image.setAttribute("src", content.imagen);
-
-            const release_year = document.getElementById("ano_lanzamiento");
-            release_year.innerText = content.ano_lanzamiento;
-
-            const description = document.getElementById("descripcion");
-            description.innerText = content.descripcion;
+            const genre = document.getElementById("genre");
+            genre.innerText = content.genre_name;
 
             const director = document.getElementById("director");
             director.innerText = content.director;
-            
+
+            const release_year = document.getElementById("release_year");
+            release_year.innerText = content.release_year;
+
+            const image = document.getElementById("image");
+            image.setAttribute("src", content.image);
+
             const name_list = content.names.split(",") 
             for (let index = 0; index < name_list.length; index++) {
                 const element = document.createElement("li")
                 element.innerText = name_list[index]
-                films.append(element)
+                film.append(element)
             }
         }
 
-        fetch("http://localhost:5000/peliculas/" + id_movie)
+        fetch("http://localhost:5000/films/" + film_id)
             .then((res) => res.json()) 
-            .then(parse_movie)
+            .then(parse_film)
             .catch((error) => console.log("ERROR", error))
 
         
@@ -112,7 +112,7 @@
                 return;
             }
 
-            fetch("http://localhost:5000/peliculas/" + id_movie, { method: "DELETE" })
+            fetch("http://localhost:5000/films/" + film_id, { method: "DELETE" })
             .then((res) => res.json()) 
             .then(delete_response)
             .catch((error) => console.log("ERROR", error))
