@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from models import db, Genre, Film, Interpreter, Performance
 from flask_cors import CORS
 
+from datetime import datetime
 
 FIRST_FILM_YEAR = 1895
 CURRENT_YEAR = 2024
@@ -10,8 +11,9 @@ CURRENT_YEAR = 2024
 app = Flask(__name__)
 CORS(app)
 port = 5000
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://nadia:Nadia1108@localhost:5432/tp'
-#app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://alex:Alex0103@localhost:5432/tp'
+#app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://nadia:Nadia1108@localhost:5432/tp'
+app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://alex:Alex0103@localhost:5432/tp'
+#app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://tp:123456@localhost:5432/BDtp'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 @app.route('/')
@@ -70,8 +72,8 @@ def add_film():
             return jsonify({"message": "El ano ingresado no es valido"})
 
         new_film = Film(title=new_title, description=new_description, 
-                                genre_id=new_genre_id, director=new_director, 
-                                release_year=new_release_year, image=new_image)
+                        genre_id=new_genre_id, director=new_director, 
+                        release_year=new_release_year, image=new_image)
         
         db.session.add(new_film)
         db.session.commit()
@@ -188,11 +190,11 @@ def show_cast(film_id):
 
     try:
         interpreters = db.session.query(Interpreter).join(Performance).join(Film
-        ).filter( Interpreter.id == Performance.Interpreter_id,
-        Performance.film_id == Film.id, Film.id == film_id).all()
+            ).filter( Interpreter.id == Performance.Interpreter_id,
+            Performance.film_id == Film.id, Film.id == film_id).all()
 
         if(not interpreters):
-            return jsonify({"mensaje": "No hay interpretes cargados"})
+            return jsonify({"message": "No hay interpretes cargados"})
 
         interpreters_data = []
 
@@ -211,25 +213,40 @@ def show_cast(film_id):
 
     except Exception as error:
         print(error)
-        return jsonify({"mensaje": "No se han podido cargar los interpretes "})
+        return jsonify({"message": "No se han podido cargar los interpretes debido a un error"})
     
+
+def valid_date(date):
+    try: 
+        datetime.strptime(date, "%Y-%m-%d")
+        return True
+    except:
+        return False
+
 
 @app.route('/films/<film_id>/cast/', methods=["POST"])
 def add_interpreter(film_id):
 
     try:
+        film = db.session.get(Film, film_id)
+
+        if(not film):
+            return jsonify({"message": "La pelicula a la que desea agregar un interprete es inexistente"})
+
         new_name = request.json.get("name")
         new_nationality = request.json.get("nationality")
         new_birthdate = request.json.get("birthdate") 
         new_image = request.json.get("image")
         new_interpretation = request.json.get("interpretation")
 
-        new_interpreter = Interpreter(name=new_name, nationality=new_nationality, 
-                                birthdate=new_birthdate, image=new_image, 
-                                interpretation_name=new_interpretation)
+        if(not new_name or not new_image or not new_interpretation):
+            return jsonify({"message": "Datos incompletos"})
 
-        if(not new_interpreter):
-            return jsonify({"mensaje": "Los datos ingresados no son validos"})
+        if(not valid_date(new_birthdate)):
+            return jsonify({"message": "La fecha ingresada es incorrecta"})
+
+        new_interpreter = Interpreter(name=new_name, nationality=new_nationality, 
+            birthdate=new_birthdate, image=new_image, interpretation_name=new_interpretation)
         
         db.session.add(new_interpreter)
         
@@ -244,7 +261,7 @@ def add_interpreter(film_id):
 
     except Exception as error:
         print(error)
-        return jsonify({"mensaje": "No se ha podido agregar el interprete"})
+        return jsonify({"message": "No se ha podido agregar el interprete"})
 
 
 @app.route('/films/cast/<interpreter_id>', methods=["PUT"])
@@ -306,7 +323,7 @@ def show_genres():
         genres = db.session.query(Genre).all()
         
         if(not genres):
-            return jsonify({"mensaje": "No hay generos cargados"})
+            return jsonify({"message": "No hay generos cargados"})
 
         genres_data = []
 
@@ -321,7 +338,7 @@ def show_genres():
 
     except Exception as error:
         print(error)
-        return jsonify({"mensaje": "No se han podido cargar los generos"})
+        return jsonify({"message": "No se han podido cargar los generos debido a un error"})
     
 
 @app.route('/interpreter/<interpreter_id>', methods=["GET"])
