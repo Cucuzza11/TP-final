@@ -190,7 +190,7 @@ def show_cast(film_id):
 
     try:
         interpreters = db.session.query(Interpreter).join(Performance).join(Film
-            ).filter( Interpreter.id == Performance.Interpreter_id,
+            ).filter( Interpreter.id == Performance.interpreter_id,
             Performance.film_id == Film.id, Film.id == film_id).all()
 
         if(not interpreters):
@@ -282,6 +282,9 @@ def edit_interpreter(interpreter_id):
 
         edited_interpreter = db.session.get(Interpreter, interpreter_id)
         
+        if(not edited_interpreter):
+            return jsonify({"message": "El interprete que desea editar no existe"})
+
         edited_interpreter.name = new_name
         edited_interpreter.nationality = new_nationality
         edited_interpreter.birthdate = new_birthdate
@@ -304,7 +307,7 @@ def delete_interpreter(interpreter_id):
         interpreter_to_remove = db.session.get(Interpreter, interpreter_id)
         
         if(not interpreter_to_remove):
-            return jsonify({"mensaje": "El interprete que desea eliminar no existe"})
+            return jsonify({"message": "El interprete que desea eliminar no existe"})
     
         performance_to_remove = db.session.query(Performance).filter(Performance.interpreter_id == interpreter_id).first()
         
@@ -316,7 +319,7 @@ def delete_interpreter(interpreter_id):
 
     except Exception as error:
         print(error)
-        return jsonify({"mensaje": "No se ha podido eliminar el interprete seleccionado"})
+        return jsonify({"message": "No se ha podido eliminar el interprete seleccionado debido a un error"})
 
 
 @app.route('/genres/', methods=["GET"])
