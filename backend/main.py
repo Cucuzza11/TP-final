@@ -126,6 +126,10 @@ def edit_film(film_id):
         new_release_year = int(request.json.get("release_year"))
         new_image = request.json.get("image")
 
+        if(not new_title or not new_description or not new_genre_id or not new_director
+            or not new_release_year or not new_image):
+            return jsonify({"message": "Datos incompletos"})
+
         if(new_release_year < FIRST_FILM_YEAR or new_release_year > CURRENT_YEAR):
             return jsonify({"message": "El ano ingresado no es valido"})
 
