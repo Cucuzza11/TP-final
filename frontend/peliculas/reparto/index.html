@@ -40,6 +40,10 @@
         
         function parse_cast(content) {
 
+            if(content.message) {
+                alert(content.message)
+            }
+
             const cast = document.getElementById("cast");  
             for (let index = 0; index < content.length; index++) {
 
@@ -127,7 +131,7 @@
                 window.location.href = "/peliculas/reparto?id_pelicula=" + film_id;
             }
             else {
-                alert("Ocurrio un error. Intenete denuevo")
+                alert(content.message)
             }
         }
 
