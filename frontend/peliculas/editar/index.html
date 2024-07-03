@@ -78,19 +78,24 @@
             .then(parse_genres)
             .catch((error) => console.log("ERROR", error))
 
-        function parse_data_films(data) {
+        function parse_films(content) {
 
-            document.getElementById("title").value = data.title
-            document.getElementById("description").value = data.description
-            document.getElementById("director").value = data.director
-            document.getElementById("release_year").value = data.release_year
-            document.getElementById("image").value = data.image
-            document.getElementById("genres").value = data.genre_id
+            if(content.message) {
+                alert(content.message)
+                window.location.href = "/"
+            }
+
+            document.getElementById("title").value = content.film.title
+            document.getElementById("description").value = content.film.description
+            document.getElementById("director").value = content.film.director
+            document.getElementById("release_year").value = content.film.release_year
+            document.getElementById("image").value = content.film.image
+            document.getElementById("genres").value = content.film.genre_id
         }
 
         fetch("http://localhost:5000/films/" + film_id)
             .then((response) => response.json())
-            .then(parse_data_films)
+            .then(parse_films)
             .catch((error) => console.log("ERROR", error))
         
 
@@ -99,7 +104,7 @@
                 window.location.href = "/"
             }
             else {
-                alert("ERROR")
+                alert(data.message)
             }
         }
 
