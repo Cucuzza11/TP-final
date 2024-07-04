@@ -53,3 +53,22 @@
 #main_button_style:hover {
     background-color:#6b6e72de; /* Color de fondo al pasar el ratón */
 }
+
+#back_button_style {
+    position: fixed; /* Fija el botón en la ventana */
+    top: 30px; /* Distancia desde la parte superior */
+    right: 30px; /* Distancia desde la derecha */
+    padding: 10px 20px; /* Padding interior del botón */
+    font-size: 16px; /* Tamaño de la fuente */
+    background-color: #007bffde; /* Color de fondo */
+    color: #ffffff; /* Color del texto */
+    border: 2px solid #0159b8;
+    border-radius: 10px; /* Borde redondeado */
+    cursor: pointer; /* Cursor de puntero */
+    z-index: 1000; /* Asegura que esté sobre otros elementos */
+}
+
+#back_button_style:hover {
+    background-color:#6b6e72de; /* Color de fondo al pasar el ratón */
+}
+
