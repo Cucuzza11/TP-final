@@ -76,8 +76,21 @@
             .then(parse_data_cast)
             .catch((error) => console.log("ERROR", error))
 
+        function parse_film(content) {
+
+            if(content.message) {
+                alert(content.message)
+                window.location.href = "/";
+            }
+        }
+
+        fetch("http://localhost:5000/films/" + film_id)
+            .then((res) => res.json()) 
+            .then(parse_film)
+            .catch((error) => console.log("ERROR", error))
+
         function handle_response(data){
-            console.log(data.success)
+            
             if (data.success) {
                 window.location.href = "/peliculas/reparto?id_pelicula=" + film_id
             }
@@ -96,7 +109,7 @@
             const image = formData.get("image")
             const birthdate = formData.get("birthdate")
 
-            fetch("http://localhost:5000/films/cast/" + interpreter_id, {
+            fetch("http://localhost:5000/films/" + film_id + "/cast/" + interpreter_id, {
                 method: "PUT",
                 headers: {
                     "content-Type": "application/json"
