@@ -40,6 +40,7 @@
                                 <label for="image" class="form-label">Imagen:</label>
                                 <input type="text" class="form-control" id="image" name="image" required>
                             </div>
+                            <a id="main_button" ></a>
                             <button type="submit" class="btn btn-success">Editar</button>
                         </form>
                     </div>
@@ -56,6 +57,14 @@
         const params = new URLSearchParams(window.location.search);
         const interpreter_id = params.get("id_interprete");
         const film_id = params.get("id_pelicula");
+
+        const main_button = document.getElementById("main_button");    
+        const main = document.createElement("a");
+        main.setAttribute("class", "btn btn-danger");
+        main.setAttribute("id", "main_button_style");
+        main.setAttribute("href", "/peliculas/reparto?id_pelicula=" + film_id);
+        main.textContent = "Cancelar";
+        main_button.append(main);
 
         function parse_data_cast(content) {
 
