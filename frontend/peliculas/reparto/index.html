@@ -14,7 +14,7 @@
 
 <body data-bs-theme="dark"> 
 
-    <div class ="contenedor_principal" id="add_button">
+    <div class ="main_container" id="add_button">
         <div class="row g-4" id="cast">
             <h1 >Interpretes</h1>
         </div>
@@ -33,7 +33,7 @@
         const add_button = document.getElementById("add_button");    
         const add = document.createElement("a");
         add.setAttribute("class", "btn btn-success");
-        add.setAttribute("id", "boton-agregar");
+        add.setAttribute("id", "add_button_style");
         add.setAttribute("href", "/peliculas/crear?id_pelicula=" + film_id);
         add.textContent = "AGREGAR";
         add_button.append(add);
