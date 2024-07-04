@@ -46,7 +46,7 @@
                                 <label for="image" class="form-label">Imagen:</label>
                                 <input type="text" class="form-control" id="image" name="image" required>
                             </div>
-                            <a type="submit" class="btn btn-danger" href="/">Cancelar</a>
+                            <a id="main_button" ></a>
                             <button type="submit" class="btn btn-success">Editar</button>
                         </form>
                     </div>
@@ -62,6 +62,13 @@
         
         const params = new URLSearchParams(window.location.search);
         const film_id = params.get("id_pelicula");
+
+        const main_button = document.getElementById("main_button");    
+        const main = document.createElement("a");
+        main.setAttribute("class", "btn btn-danger");
+        main.setAttribute("href", "/peliculas?id_pelicula=" + film_id);
+        main.textContent = "Cancelar";
+        main_button.append(main);
 
         function parse_genres(content) {
             
