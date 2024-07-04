@@ -31,7 +31,7 @@ def hello_world():
 def show_films():
 
     try:
-        films = Film.query.all()
+        films = db.session.query(Film).order_by(Film.title).all()
 
         if(not films):
             return jsonify({"message": "No hay peliculas cargadas"})
@@ -194,9 +194,9 @@ def show_cast(film_id):
         if(not film):
             return jsonify({"message": "La pelicula de la cual desea ver sus interpretes no existe"})
 
-        interpreters = db.session.query(Interpreter).join(Performance).join(Film
-            ).filter( Interpreter.id == Performance.interpreter_id,
-            Performance.film_id == Film.id, Film.id == film_id).all()
+        interpreters = db.session.query(Interpreter).order_by(Interpreter.name).join(Performance).join(Film
+            ).filter( Interpreter.id == Performance.interpreter_id, Performance.film_id == Film.id, 
+            Film.id == film_id).all()
 
         if(not interpreters):
             return jsonify({"message": "No hay interpretes cargados"})
