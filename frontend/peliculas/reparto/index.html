@@ -13,10 +13,11 @@
 </head>
 
 <body data-bs-theme="dark"> 
-
-    <div class ="main_container" id="add_button" id="main_button">
-        <div class="row g-4" id="cast">
-            <h1 >Interpretes</h1>
+    <div class ="main_container" id="add_button">
+        <div id="back_button">
+            <div class="row g-4" id="cast">
+                <h1 >Interpretes</h1>
+            </div>
         </div>
     </div> 
     <a id="main_button_style" class="btn btn-success" href="/">INICIO</a>
@@ -38,6 +39,14 @@
         add.textContent = "AGREGAR";
         add_button.append(add);
 
+        const back_button = document.getElementById("back_button");    
+        const back = document.createElement("a");
+        back.setAttribute("class", "btn btn-success");
+        back.setAttribute("id", "back_button_style");
+        back.setAttribute("href", "/peliculas?id_pelicula=" + film_id);
+        back.textContent = "⇦ ATRAS";
+        back_button.append(back);
+
         function parse_cast(content) {
 
             if(content.message) {
@@ -48,7 +57,7 @@
             for (let index = 0; index < content.length; index++) {
 
                 const separator = document.createElement("div");
-                separator.setAttribute("class", "separador");
+                separator.setAttribute("class", "separator");
 
                 const div = document.createElement("div");
                 div.setAttribute("class", "card mb-4");
@@ -86,9 +95,6 @@
                 birthdate.setAttribute("class", "text-body-secondary");
                 birthdate.textContent = "Fecha de nacimiento: " + content[index].birthdate;
 
-                const footer = document.createElement("div");
-                footer.setAttribute("class", "card-footer"); 
-
                 const remove_button = document.createElement("button");
                 remove_button.setAttribute("class", "btn btn-danger");
                 remove_button.setAttribute("onclick", `remove_cast(${content[index].interpreter_id})`);
@@ -103,17 +109,17 @@
                 interpretation.style.marginBottom = "20px";
                 nationality.style.marginBottom = "20px";
                 birthdate.style.marginBottom = "20px";
-
-                footer.append(remove_button);                
+                edit_button.style.marginLeft = "10px";
+                
                 div3.append(image);
                 div2.append(div3);
                 card_body.append(name);
                 card_body.append(interpretation);
                 card_body.append(nationality);
                 card_body.append(birthdate);
-                div4.append(card_body);
+                card_body.append(remove_button);
                 card_body.append(edit_button);
-                div3.append(footer);
+                div4.append(card_body);
                 div2.append(div4);
                 div.append(div2);
                 separator.append(div);
