@@ -41,6 +41,7 @@
                                 <label for="image" class="form-label">Imagen:</label>
                                 <input type="text" class="form-control" id="image" name="image" placeholder="Ej: /img/sidneyprescott" required>
                             </div>
+                            <a id="main_button" ></a>
                             <button type="submit" class="btn btn-success">Crear</button>
                         </form>
                     </div>
@@ -59,10 +60,18 @@
         const params = new URLSearchParams(window.location.search);
         const film_id = params.get("id_pelicula");
 
+        const main_button = document.getElementById("main_button");    
+        const main = document.createElement("a");
+        main.setAttribute("class", "btn btn-danger");
+        main.setAttribute("id", "main_button_style");
+        main.setAttribute("href", "/peliculas/reparto?id_pelicula=" + film_id);
+        main.textContent = "Cancelar";
+        main_button.append(main);
+
         function handle_response(data){
 
             if (data.success) {
-                window.location.href = `/peliculas/reparto?id_pelicula=${film_id}`
+                window.location.href = "/peliculas/reparto?id_pelicula=" + film_id
             }
             else {
                 alert(data.message)
