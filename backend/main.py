@@ -173,7 +173,9 @@ def delete_film(film_id):
             for performance_to_remove in performances_to_remove:
                 interpreter_to_remove = db.session.get(Interpreter, performance_to_remove.interpreter_id)
                 db.session.delete( performance_to_remove)
+                db.session.commit()
                 db.session.delete(interpreter_to_remove)
+                db.session.commit()
 
         db.session.delete(film_to_remove)
         db.session.commit()
@@ -322,6 +324,7 @@ def delete_interpreter(interpreter_id):
         performance_to_remove = db.session.query(Performance).filter(Performance.interpreter_id == interpreter_id).first()
         
         db.session.delete(performance_to_remove)
+        db.session.commit()
         db.session.delete(interpreter_to_remove)
         db.session.commit()
         
