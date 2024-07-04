@@ -1,4 +1,4 @@
-.contenedor_principal {
+.main_container {
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 10px;
@@ -9,18 +9,16 @@
     display: flex;
 }
 
-.horizontal label{
+.horizontal label {
     margin-right: 10px;
 }
 
-.separador{
-
+.separator {
     max-width:800px; 
     margin: 20px auto; 
-
 }
 
-#boton-agregar {
+#add_button_style {
     position: fixed; /* Fija el botón en la ventana */
     bottom: 30px; /* Distancia desde la parte inferior */
     right: 30px; /* Distancia desde la derecha */
@@ -34,6 +32,6 @@
     z-index: 1000; /* Asegura que esté sobre otros elementos */
 }
 
-#boton-agregar:hover {
+#add_button_style:hover {
     background-color:#033469de; /* Color de fondo al pasar el ratón */
 }
