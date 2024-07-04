@@ -14,12 +14,12 @@
 
 <body data-bs-theme="dark"> 
 
-    <div class ="main_container" id="add_button">
+    <div class ="main_container" id="add_button" id="main_button">
         <div class="row g-4" id="cast">
             <h1 >Interpretes</h1>
         </div>
     </div> 
-
+    <a id="main_button_style" class="btn btn-success" href="/">Inicio</a>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
@@ -37,6 +37,14 @@
         add.setAttribute("href", "/peliculas/crear?id_pelicula=" + film_id);
         add.textContent = "AGREGAR";
         add_button.append(add);
+
+        const main_button = document.getElementById("main_button");    
+        const main = document.createElement("a");
+        main.setAttribute("class", "btn btn-success");
+        main.setAttribute("id", "main_button_style");
+        main.setAttribute("href", "/");
+        main.textContent = "Inicio";
+        main_button.append(main);
         
         function parse_cast(content) {
 
