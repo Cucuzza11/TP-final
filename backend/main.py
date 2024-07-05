@@ -11,8 +11,8 @@ CURRENT_YEAR = 2024
 app = Flask(__name__)
 CORS(app)
 port = 5000
-#app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://nadia:Nadia1108@localhost:5432/tp'
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://alex:Alex0103@localhost:5432/tp'
+app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://nadia:Nadia1108@localhost:5432/tp'
+#app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://alex:Alex0103@localhost:5432/tp'
 #app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://tp:123456@localhost:5432/BDtp'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
@@ -142,7 +142,7 @@ def edit_film(film_id):
             return jsonify({"message": "La pelicula que desea editar no existe"})
 
         edited_film.title = new_title    
-        edited_film.descripcion = new_description
+        edited_film.description = new_description
         edited_film.genre_id = new_genre_id
         edited_film.director = new_director
         edited_film.release_year = new_release_year
