@@ -339,7 +339,7 @@ def delete_interpreter(interpreter_id):
 def show_genres():
 
     try:
-        genres = db.session.query(Genre).all()
+        genres = db.session.query(Genre).order_by(Genre.name).all()
         
         if(not genres):
             return jsonify({"message": "No hay generos cargados"})
