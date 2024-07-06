@@ -100,12 +100,11 @@
 
         function handle_response(data){
             
-            if (data.success) {
+            if (data.success) 
                 window.location.href = "/peliculas/reparto?id_pelicula=" + film_id
-            }
-            else {
+            else 
                 alert(content.message)
-            }
+            
         }
 
         function edit_cast(event) {
