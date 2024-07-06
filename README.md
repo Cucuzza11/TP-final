@@ -20,7 +20,7 @@ Pueden ser agregados nuevos interpretes o eliminarse interpretes ya existentes, 
 ```bash
 virtualenv venv
 source venv/bin/activate
-sudo apt get install libpq-dev
+sudo apt-get install libpq-dev
 cd backend
 pip install -r requirements.txt
 ```
