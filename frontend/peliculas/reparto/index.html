@@ -80,7 +80,7 @@
                 card_body.setAttribute("class", "card-body");   
                 
                 const name = document.createElement("label");
-                name.setAttribute("class", "display-4");
+                name.setAttribute("class", "display-5");
                 name.textContent = content[index].name;
 
                 const interpretation = document.createElement("h3");
@@ -111,7 +111,7 @@
                 edit_button.setAttribute("href", `/peliculas/reparto/editar?id_pelicula=${film_id}&id_interprete=${content[index].interpreter_id}`);
                 edit_button.textContent = "Editar";
 
-                name.style.marginBottom = "40px";
+                name.style.marginBottom = "20px";
                 interpretation.style.marginBottom = "20px";
                 nationality.style.marginBottom = "20px";
                 birthdate.style.marginBottom = "20px";
