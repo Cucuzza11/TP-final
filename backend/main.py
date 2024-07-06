@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from models import db, Genre, Film, Interpreter, Performance
 from flask_cors import CORS
-
 from datetime import datetime
 
 FIRST_FILM_YEAR = 1895
@@ -210,7 +209,7 @@ def show_cast(film_id):
                 "interpreter_id": interpreter.id,
                 "name": interpreter.name,
                 "nationality": interpreter.nationality,
-                "birthdate": interpreter.birthdate.isoformat(),
+                "birthdate": interpreter.birthdate.isoformat() if interpreter.birthdate else None,
                 "image": interpreter.image,
                 "interpretation": interpreter.interpretation_name
             }
@@ -242,14 +241,16 @@ def add_interpreter(film_id):
 
         new_name = request.json.get("name")
         new_nationality = request.json.get("nationality")
-        new_birthdate = request.json.get("birthdate") 
+        new_birthdate = None
+        if(request.json.get("birthdate")):
+            new_birthdate =  request.json.get("birthdate")
         new_image = request.json.get("image")
         new_interpretation = request.json.get("interpretation")
 
         if(not new_name or not new_image or not new_interpretation):
             return jsonify({"message": "Datos incompletos"})
 
-        if(not valid_date(new_birthdate)):
+        if(new_birthdate and not valid_date(new_birthdate)):
             return jsonify({"message": "La fecha ingresada es incorrecta"})
 
         new_interpreter = Interpreter(name=new_name, nationality=new_nationality, 
@@ -282,14 +283,16 @@ def edit_interpreter(film_id, interpreter_id):
 
         new_name = request.json.get("name")
         new_nationality = request.json.get("nationality")
-        new_birthdate = request.json.get("birthdate") 
+        new_birthdate = None
+        if(request.json.get("birthdate")):
+            new_birthdate = request.json.get("birthdate") 
         new_image = request.json.get("image")
         new_interpretation = request.json.get("interpretation")    
         
         if(not new_name or not new_image or not new_interpretation):
             return jsonify({"message": "Datos incompletos"})
 
-        if(not valid_date(new_birthdate)):
+        if(new_birthdate and not valid_date(new_birthdate)):
             return jsonify({"message": "La fecha ingresada es incorrecta"})
 
         edited_interpreter = db.session.get(Interpreter, interpreter_id)
@@ -372,7 +375,7 @@ def show_interpreter(interpreter_id):
         interpreter_data = {
             "name": interpreter.name,
             "nationality": interpreter.nationality,
-            "birthdate": interpreter.birthdate.isoformat(),
+            "birthdate": interpreter.birthdate.isoformat() if interpreter.birthdate else None,
             "image": interpreter.image,
             "interpretation": interpreter.interpretation_name
         }
