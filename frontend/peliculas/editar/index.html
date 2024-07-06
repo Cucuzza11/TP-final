@@ -114,12 +114,10 @@
         
 
         function handle_response(data){
-            if (data.success) {
+            if (data.success) 
                 window.location.href = "/peliculas?id_pelicula=" + film_id
-            }
-            else {
+            else 
                 alert(data.message)
-            }
         }
 
         function edit_movie(event) {
