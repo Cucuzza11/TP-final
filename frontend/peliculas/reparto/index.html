@@ -49,9 +49,9 @@
 
         function parse_cast(content) {
 
-            if(content.message) {
+            if(content.message) 
                 alert(content.message)
-            }
+            
 
             const cast = document.getElementById("cast");  
             for (let index = 0; index < content.length; index++) {
@@ -89,11 +89,17 @@
 
                 const nationality = document.createElement("h3");
                 nationality.setAttribute("class", "text-body-secondary");
-                nationality.textContent = "Nacionaliad: " + content[index].nationality;
+                if(content[index].nationality)
+                    nationality.textContent = "Nacionalidad: " + content[index].nationality;
+                else
+                    nationality.textContent = "Nacionalidad desconocida"
 
                 const birthdate = document.createElement("h3");
                 birthdate.setAttribute("class", "text-body-secondary");
-                birthdate.textContent = "Fecha de nacimiento: " + content[index].birthdate;
+                if(content[index].birthdate)
+                    birthdate.textContent = "Fecha de nacimiento: " + content[index].birthdate;
+                else
+                    birthdate.textContent = "Fecha de nacimiento desconocida"
 
                 const remove_button = document.createElement("button");
                 remove_button.setAttribute("class", "btn btn-danger");
@@ -133,19 +139,18 @@
             .catch((error) => console.log("ERROR", error))
 
         function delete_response(data) {
-            if (data.success) {
+            if (data.success) 
                 window.location.href = "/peliculas/reparto?id_pelicula=" + film_id;
-            }
-            else {
+            else 
                 alert(data.message)
-            }
+            
         }
 
         function remove_cast(interpreter_id) {
             const confirmation = confirm("Esta seguro que desea eliminar este interprete?");
-            if (!confirmation) {
+            if (!confirmation) 
                 return;
-            }
+            
 
             fetch("http://localhost:5000/films/cast/" + interpreter_id , { method: "DELETE" })
             .then((res) => res.json()) 
