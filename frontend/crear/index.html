@@ -87,12 +87,10 @@
 
         function handle_response(data){
 
-            if (data.success) {
+            if (data.success) 
                 window.location.href = `/`
-            }
-            else {
+            else 
                 alert(data.message)
-            }
         }
 
         function create_movie(event) {
