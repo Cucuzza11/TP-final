@@ -27,9 +27,9 @@
 
         function parse_films(content) {
 
-            if(content.message) {
+            if(content.message) 
                 alert(content.message)
-            }
+            
             
             const film = document.getElementById("films");
             for (let index = 0; index < content.length; index++) {
@@ -48,9 +48,8 @@
                 const card_body = document.createElement("div");
                 card_body.setAttribute("class", "card-body");
                 
-                const title = document.createElement("h6");
+                const title = document.createElement("h5");
                 title.setAttribute("class", "card-title");
-                title.setAttribute("h6", content[index].title)
                 title.textContent = content[index].title;
 
                 const information_button = document.createElement("a");
