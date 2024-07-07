@@ -39,14 +39,14 @@
                             </div>
                             <div class="mb-3">
                                 <label for="release_year" class="form-label">Año de lanzamiento:</label>
-                                <input type="text" class="form-control" id="release_year" name="release_year" required>
+                                <input type="number" class="form-control" id="release_year" name="release_year" required>
                             </div>
                             </select>
                             <div class="mb-3">
                                 <label for="image" class="form-label">Imagen:</label>
                                 <input type="text" class="form-control" id="image" name="image" required>
                             </div>
-                            <a id="main_button" ></a>
+                            <a id="remove_button" ></a>
                             <button type="submit" class="btn btn-success">Editar</button>
                         </form>
                     </div>
@@ -63,7 +63,7 @@
         const params = new URLSearchParams(window.location.search);
         const film_id = params.get("id_pelicula");
 
-        const main_button = document.getElementById("main_button");    
+        const main_button = document.getElementById("remove_button");    
         const main = document.createElement("a");
         main.setAttribute("class", "btn btn-danger");
         main.setAttribute("href", "/peliculas?id_pelicula=" + film_id);
@@ -124,15 +124,16 @@
         }
 
         function edit_movie(event) {
-            event.preventDefault()
 
-            const formData = new FormData(event.target)
-            const title = formData.get("title")
-            const description = formData.get("description")
-            const genre_id = formData.get("genre_id")
-            const director = formData.get("director")
-            const image = formData.get("image")
-            const release_year = formData.get("release_year")
+            event.preventDefault()
+            const form_data = new FormData(event.target)
+
+            const title = form_data.get("title")
+            const description = form_data.get("description")
+            const genre_id = form_data.get("genre_id")
+            const director = form_data.get("director")
+            const image = form_data.get("image")
+            const release_year = form_data.get("release_year")
 
             fetch("http://localhost:5000/films/" + film_id, {
                 method: "PUT",
