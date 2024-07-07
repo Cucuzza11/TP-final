@@ -37,38 +37,66 @@
 }
 
 #main_button_style {
-    position: fixed; /* Fija el botón en la ventana */
-    bottom: 30px; /* Distancia desde la parte inferior */
+    position: fixed; 
+    bottom: 30px; 
     left: 30px; /* Distancia desde la izquierda */
-    padding: 10px 20px; /* Padding interior del botón */
-    font-size: 16px; /* Tamaño de la fuente */
-    background-color: #f4ececde; /* Color de fondo */
-    color: #000000; /* Color del texto */
+    padding: 10px 20px; 
+    font-size: 16px;
+    background-color: #f4ececde; 
+    color: #000000; 
     border: 2px solid #d3d0d0;
-    border-radius: 10px; /* Borde redondeado */
-    cursor: pointer; /* Cursor de puntero */
-    z-index: 1000; /* Asegura que esté sobre otros elementos */
+    border-radius: 10px; 
+    cursor: pointer; 
+    z-index: 1000; 
 }
 
 #main_button_style:hover {
-    background-color:#6b6e72de; /* Color de fondo al pasar el ratón */
+    background-color:#6b6e72de;
 }
 
 #back_button_style {
-    position: fixed; /* Fija el botón en la ventana */
-    top: 30px; /* Distancia desde la parte superior */
-    right: 30px; /* Distancia desde la derecha */
-    padding: 10px 20px; /* Padding interior del botón */
-    font-size: 16px; /* Tamaño de la fuente */
-    background-color: #007bffde; /* Color de fondo */
-    color: #ffffff; /* Color del texto */
+    position: fixed; 
+    top: 30px; 
+    right: 30px; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+    background-color: #007bffde; 
+    color: #ffffff; 
     border: 2px solid #0159b8;
-    border-radius: 10px; /* Borde redondeado */
-    cursor: pointer; /* Cursor de puntero */
-    z-index: 1000; /* Asegura que esté sobre otros elementos */
+    border-radius: 10px; 
+    cursor: pointer; 
+    z-index: 1000; 
 }
 
 #back_button_style:hover {
-    background-color:#6b6e72de; /* Color de fondo al pasar el ratón */
+    background-color:#6b6e72de;
 }
 
+#card_style {
+    background-color:#808080;
+}
+
+.img-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.card {
+    height: 100%; 
+}
+
+#title_style {
+    color:#1d1b1b;
+}
+
+.cast-image {
+    width: 100%; 
+    height: 320px; 
+    object-fit: cover; /* Cubrir el espacio manteniendo la relación de aspecto */
+}
+
+.film-image {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+}
