@@ -77,14 +77,15 @@
         }
 
         function create_cast(event) {
+            
             event.preventDefault()
-            const formData = new FormData(event.target)
+            const form_data = new FormData(event.target)
 
-            const name = formData.get("name")
-            const nationality = formData.get("nationality")
-            const birthdate = formData.get("birthdate")
-            const interpretation = formData.get("interpretation")
-            const image = formData.get("image") 
+            const name = form_data.get("name")
+            const nationality = form_data.get("nationality")
+            const birthdate = form_data.get("birthdate")
+            const interpretation = form_data.get("interpretation")
+            const image = form_data.get("image") 
 
             fetch("http://localhost:5000/films/" + film_id + "/cast/",  {
                 method: "POST",
