@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from models import db, Genre, Film, Interpreter, Performance
 from flask_cors import CORS
 from datetime import datetime
+from sqlalchemy import text
 
 FIRST_FILM_YEAR = 1895
 CURRENT_YEAR = 2024
@@ -11,7 +12,7 @@ app = Flask(__name__)
 CORS(app)
 port = 5000
 app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://nadia:Nadia1108@localhost:5432/tp'
-#app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://alex:Alex0103@localhost:5432/tp'
+app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://alex:Alex0103@localhost:5432/tp'
 #app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://tp:123456@localhost:5432/BDtp'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
@@ -56,6 +57,12 @@ def show_films():
 def add_film():
 
     try:
+        last_film = Film.query.order_by(Film.id.desc()).first()
+        if (last_film):
+            new_secuence = last_film.id + 1
+            db.session.execute(text(f"SELECT setval('films_id_seq', {new_secuence});"))
+            db.session.commit()
+
         new_title = request.json.get("title")
         new_description = request.json.get("description")
         new_genre_id = request.json.get("genre_id") 
@@ -234,6 +241,16 @@ def valid_date(date):
 def add_interpreter(film_id):
 
     try:
+        last_interpreter = Interpreter.query.order_by(Interpreter.id.desc()).first()
+        last_performance = Performance.query.order_by(Performance.id.desc()).first()
+        
+        if (last_interpreter and last_performance):
+            new_secuence_interpreters = last_interpreter.id + 1
+            new_secuence_performances = last_performance.id + 1
+            db.session.execute(text(f"SELECT setval('interpreters_id_seq', {new_secuence_interpreters}, false);"))
+            db.session.execute(text(f"SELECT setval('performances_id_seq', {new_secuence_performances}, false);"))
+            db.session.commit()
+
         film = db.session.get(Film, film_id)
 
         if(not film):
@@ -257,10 +274,9 @@ def add_interpreter(film_id):
             birthdate=new_birthdate, image=new_image, interpretation_name=new_interpretation)
         
         db.session.add(new_interpreter)
+        db.session.commit()
         
-        last_interpreter = Interpreter.query.order_by(Interpreter.id.desc()).first()
-
-        new_performance = Performance(film_id=film_id, interpreter_id=last_interpreter.id)
+        new_performance = Performance(film_id=film_id, interpreter_id=last_interpreter.id + 1)
         db.session.add(new_performance)
         db.session.commit()
 
