@@ -30,7 +30,6 @@
             if(content.message) 
                 alert(content.message)
             
-            
             const film = document.getElementById("films");
             for (let index = 0; index < content.length; index++) {
 
@@ -39,10 +38,12 @@
 
                 const card = document.createElement("a");
                 card.setAttribute("class", "card text-decoration-none");
+                card.setAttribute("id", "card_style");
                 card.setAttribute("href", `/peliculas?id_pelicula=${content[index].film_id}`);
 
                 const image = document.createElement("img");
                 image.setAttribute("class", "img-thumbnail");
+                image.setAttribute("alt", content[index].title);
                 image.setAttribute("src", content[index].image)
 
                 const card_body = document.createElement("div");
@@ -50,10 +51,11 @@
                 
                 const title = document.createElement("h5");
                 title.setAttribute("class", "card-title");
+                title.setAttribute("id", "title_style");
                 title.textContent = content[index].title;
 
                 const information_button = document.createElement("a");
-                information_button.setAttribute("class", "btn btn-primary");
+                information_button.setAttribute("class", "btn btn-dark");
                 information_button.setAttribute("href", `/peliculas?id_pelicula=${content[index].film_id}`);
                 information_button.textContent = "Info";
 
