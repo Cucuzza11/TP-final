@@ -52,7 +52,6 @@
             if(content.message) 
                 alert(content.message)
             
-
             const cast = document.getElementById("cast");  
             for (let index = 0; index < content.length; index++) {
 
@@ -60,8 +59,8 @@
                 separator.setAttribute("class", "separator");
 
                 const div = document.createElement("div");
-                div.setAttribute("class", "card mb-4");
-                div.setAttribute("style", "max-width: 720px;");
+                div.setAttribute("class", "card mb-0");
+                div.setAttribute("style", "max-width: 720px");
 
                 const div2 = document.createElement("div");
                 div2.setAttribute("class", "row g-4");
@@ -70,7 +69,8 @@
                 div3.setAttribute("class", "col-md-4");
             
                 const image = document.createElement("img");
-                image.setAttribute("class", "img-fluid rounded-start");
+                image.setAttribute("class", "img-thumbnail cast-image");
+                image.setAttribute("alt", content[index].name);
                 image.setAttribute("src", content[index].image)
 
                 const div4 = document.createElement("div");
@@ -143,7 +143,6 @@
                 window.location.href = "/peliculas/reparto?id_pelicula=" + film_id;
             else 
                 alert(data.message)
-            
         }
 
         function remove_cast(interpreter_id) {
