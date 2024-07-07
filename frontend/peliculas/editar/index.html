@@ -27,7 +27,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="genre_id" class="mb-1">Genero:</label>
-                                <select class="form-select mb-3" id="genre_id" name="genre_id" required></select>
+                                <select class="form-select mb-3" id="genre" name="genre_id" required></select>
                             </div>
                             <div class="mb-3">
                                 <label for="description" class="form-label">Descripcion:</label>
@@ -70,28 +70,6 @@
         main.textContent = "Cancelar";
         main_button.append(main);
 
-        function parse_genres(content) {
-            
-            if(content.message) {
-                alert(content.message)
-                window.location.href = "/"
-            }
-            
-            const genres = document.getElementById("genre_id");
-            for (let index = 0; index < content.length; index++) {
-
-                const genre = document.createElement("option");
-                genre.setAttribute("value", content[index].genre_id);
-                genre.textContent = content[index].name;
-                genres.append(genre);
-            }
-        }
-
-        fetch("http://localhost:5000/genres/")
-            .then((res) => res.json())
-            .then(parse_genres)
-            .catch((error) => console.log("ERROR", error))
-
         function parse_films(content) {
 
             if(content.message) {
@@ -104,7 +82,32 @@
             document.getElementById("director").value = content.film.director
             document.getElementById("release_year").value = content.film.release_year
             document.getElementById("image").value = content.film.image
-            document.getElementById("genre_id").value = content.film.genre_id
+
+            function parse_genres(data) {
+            
+                if(data.message) {
+                    alert(data.message)
+                    window.location.href = "/"
+                }
+            
+                const genres = document.getElementById("genre");
+                for (let index = 0; index < data.length; index++) {
+
+                    const genre = document.createElement("option");
+                    genre.setAttribute("value", data[index].genre_id);
+                    genre.textContent = data[index].name;
+                    
+                    if (content.film.genre_id == data[index].genre_id)
+                        genre.setAttribute("selected", "selected");
+                    
+                    genres.append(genre);
+                }
+            }
+
+            fetch("http://localhost:5000/genres/")
+                .then((res) => res.json())
+                .then(parse_genres)
+                .catch((error) => console.log("ERROR", error))
         }
 
         fetch("http://localhost:5000/films/" + film_id)
