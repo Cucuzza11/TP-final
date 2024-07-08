@@ -71,6 +71,10 @@
                 alert(content.message)
                 window.location.href = "/peliculas/reparto?id_pelicula=" + film_id
             }
+            else if(content.error) {
+                alert(content.error)
+                window.location.href = "/"
+            }
 
             document.getElementById("name").value = content.interpreter.name
             document.getElementById("nationality").value = content.interpreter.nationality
@@ -79,7 +83,7 @@
             document.getElementById("image").value = content.interpreter.image
         }
 
-        fetch("http://localhost:5000/interpreter/" + interpreter_id)
+        fetch(`http://localhost:5000/film/${film_id}/interpreter/` + interpreter_id)
             .then((res) => res.json())
             .then(parse_data_cast)
             .catch((error) => console.log("ERROR", error))
