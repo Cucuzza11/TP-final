@@ -49,10 +49,12 @@
 
         function parse_cast(content) {
 
-            if(content.message) {
+            if (content.message) {
                 alert(content.message)
                 window.location.href = "/"
             }
+            else if (content.success)
+                alert(content.success)
             
             const cast = document.getElementById("cast");  
             for (let index = 0; index < content.length; index++) {
