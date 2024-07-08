@@ -11,9 +11,9 @@ CURRENT_YEAR = 2024
 app = Flask(__name__)
 CORS(app)
 port = 5000
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://nadia:Nadia1108@localhost:5432/tp'
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://alex:Alex0103@localhost:5432/tp'
-#app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://tp:123456@localhost:5432/BDtp'
+#app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://nadia:Nadia1108@localhost:5432/tp'
+#app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://alex:Alex0103@localhost:5432/tp'
+app.config['SQLALCHEMY_DATABASE_URI']='postgresql+psycopg2://tp:123456@localhost:5432/BDtp'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 @app.route('/')
@@ -207,7 +207,7 @@ def show_cast(film_id):
             Film.id == film_id).all()
 
         if(not interpreters):
-            return jsonify({"message": "No hay interpretes cargados"})
+            return jsonify({"success": "No hay interpretes cargados"})
 
         interpreters_data = []
 
