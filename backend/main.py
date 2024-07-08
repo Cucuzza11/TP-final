@@ -379,14 +379,25 @@ def show_genres():
         return jsonify({"message": "No se han podido cargar los generos debido a un error"})
     
 
-@app.route('/interpreter/<interpreter_id>', methods=["GET"])
-def show_interpreter(interpreter_id):
+@app.route('/film/<film_id>/interpreter/<interpreter_id>', methods=["GET"])
+def show_interpreter(film_id, interpreter_id):
 
     try:
+        film = db.session.get(Film, film_id)
+        
+        if(not film):
+            return jsonify({"error": "La pelicula de la cual desea editar el interprete no existe"})
+
         interpreter = db.session.get(Interpreter, interpreter_id)
         
         if(not interpreter):
             return jsonify({"message": "El interprete seleccionado no existe"})
+
+        valid_peformance = db.session.query(Performance).filter(Performance.film_id == film_id, 
+                        Performance.interpreter_id == interpreter_id ).first()
+        
+        if(not valid_peformance):
+            return jsonify({"error": "el interprete no corresponde a la pelicula seleccionada"})
 
         interpreter_data = {
             "name": interpreter.name,
