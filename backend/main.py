@@ -235,6 +235,16 @@ def valid_date(date):
         return True
     except:
         return False
+    
+def valid_year(date):
+                
+    valid = date.split('-')
+    valid_year = int(valid[0])
+
+    if(valid_year >= CURRENT_YEAR):
+        return False
+    
+    return True
 
 
 @app.route('/films/<film_id>/cast/', methods=["POST"])
@@ -266,8 +276,8 @@ def add_interpreter(film_id):
 
         if(not new_name or not new_image or not new_interpretation):
             return jsonify({"message": "Datos incompletos"})
-
-        if(new_birthdate and not valid_date(new_birthdate)):
+        
+        if((new_birthdate and not valid_date(new_birthdate)) or not valid_year(new_birthdate)):
             return jsonify({"message": "La fecha ingresada es incorrecta"})
 
         new_interpreter = Interpreter(name=new_name, nationality=new_nationality, 
@@ -308,7 +318,7 @@ def edit_interpreter(film_id, interpreter_id):
         if(not new_name or not new_image or not new_interpretation):
             return jsonify({"message": "Datos incompletos"})
 
-        if(new_birthdate and not valid_date(new_birthdate)):
+        if((new_birthdate and not valid_date(new_birthdate)) or not valid_year(new_birthdate)):
             return jsonify({"message": "La fecha ingresada es incorrecta"})
 
         edited_interpreter = db.session.get(Interpreter, interpreter_id)
